@@ -1,5 +1,5 @@
 const SHA256=require('crypto-js/sha256');
-   
+const nodeUrl = process.argv[3];  
 class Block{
     constructor(timestamp,Transactions,previousHash=''){
         
@@ -37,7 +37,7 @@ class Blockchain{
         this.chain=[this.createGensis()];
         this.pendingTransactions = [];
         this.difficulty=2;     //Setting the difficulty
-                  
+        this.nodeUrl = nodeUrl;         
         this.networkNodes = [];
     }   
     createGensis(){
@@ -63,7 +63,8 @@ class Blockchain{
             age:age,
             gender:gender
         }
-        this.PendingTransactions(Transactions);
+       return Transactions;
+        //this.PendingTransactions(Transactions);
      }
     PendingTransactions(Transactions){
         let total=this.pendingTransactions.length;
@@ -72,10 +73,14 @@ class Blockchain{
         }
         else{
             this.pendingTransactions.push(Transactions);
+            //console.log(this.pendingTransactions);
             const extra=this.pendingTransactions[10];
             //console.log(extra);
             this.addBlock(new Block);
+
            console.log('Mining since pending list is full!!!') ;
+           console.log("hain:"+JSON.stringify(this.chain,null,4) ) ;
+
            this.pendingTransactions=[]; 
            this.pendingTransactions.push(extra);
            //console.log(this.pendingTransactions);
@@ -85,7 +90,7 @@ class Blockchain{
     }
     
 
-    isChainvalid(){
+    isChainValid(){
         for(let i=1;i< this.chain.length;i++){
             const currentblock=this.chain[i];
             const previousblock=this.chain[i-1];
