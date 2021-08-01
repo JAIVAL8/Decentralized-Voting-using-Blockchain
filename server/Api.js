@@ -8,7 +8,7 @@ const Blockchain = require('./Mainchain');
 const votechain = new Blockchain();
 const port = process.argv[2];
 const reqPromise = require('request-promise');
-const { Alert } = require('bootstrap');
+
 
 
 app.get('/blockchain', function (req, res) {
@@ -38,7 +38,7 @@ app.post('/transaction/broadcast', function (req, res) {
         );
        // console.log(transaction);
     if(votechain.DoesVoteExist(transaction.uid)){
-       Alert('Vote Already Exist') ;
+       //Alert('Vote Already Exist') ;
     }
     else{
         votechain.PendingTransactions(transaction );
