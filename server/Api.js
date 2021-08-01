@@ -8,10 +8,15 @@ const Blockchain = require('./Mainchain');
 const votechain = new Blockchain();
 const port = process.argv[2];
 const reqPromise = require('request-promise');
+const { Alert } = require('bootstrap');
 
 
 app.get('/blockchain', function (req, res) {
     res.send(votechain);
+});
+
+app.get('/result', function (req, res) {
+    res.send(votechain.Results());
 });
 app.post('/transaction', function (req, res) {
     const transaction = req.body;
@@ -32,27 +37,32 @@ app.post('/transaction/broadcast', function (req, res) {
         req.body.gender
         );
        // console.log(transaction);
-    votechain.PendingTransactions(transaction );
-    const requests = [];
-    votechain.networkNodes.forEach(networkNode => {
-        const requestOptions = {
-            uri: networkNode + '/transaction',
-            method: 'POST',
-            body: transaction,
-            json: true
-        };
+    if(votechain.DoesVoteExist(transaction.uid)){
+       Alert('Vote Already Exist') ;
+    }
+    else{
+        votechain.PendingTransactions(transaction );
+        const requests = [];
+        votechain.networkNodes.forEach(networkNode => {
+            const requestOptions = {
+                uri: networkNode + '/transaction',
+                method: 'POST',
+                body: transaction,
+                json: true
+            };
 
-        requests.push(reqPromise(requestOptions));
-    });
-
-    Promise.all(requests)
-        .then(data => {
-            res.json(
-                {
-                    message: `Creating and broadcasting Transaction successfully!`
-                }
-            );
+            requests.push(reqPromise(requestOptions));
         });
+
+        Promise.all(requests)
+            .then(data => {
+                res.json(
+                    {
+                        message: `Creating and broadcasting Transaction successfully!`
+                    }
+                );
+            });
+    }
 });
 
 app.post('/register-node', function (req, res) {
