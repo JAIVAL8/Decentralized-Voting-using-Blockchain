@@ -63,8 +63,8 @@ class Blockchain{
             age:age,
             gender:gender
         }
-       //return Transactions;
-        this.PendingTransactions(Transactions);
+       return Transactions;
+        //this.PendingTransactions(Transactions);
      }
     PendingTransactions(Transactions){
         let total=this.pendingTransactions.length;
