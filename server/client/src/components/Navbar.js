@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+/*import { Link } from "react-router-dom";*/
 import 'bootstrap/dist/css/bootstrap.css'
 
 
@@ -8,7 +8,7 @@ function Navbar() {
           
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#"><h1>F-votechain</h1></a>
+      <a className="navbar-brand" href="/"><h1>F-votechain</h1></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -29,22 +29,3 @@ function Navbar() {
 
 export default Navbar;
 
-/*
-<div>
-      <nav>
-        <div class="nav-wrapper black">
-          <Link to="/" class="brand-logo left">
-            Vote-Chain
-          </Link>
-          <ul id="nav-mobile" class="right">
-            <li>
-              <Link to="/sign-in">Sign in</Link>
-            </li>
-            <li>
-              <Link to="/sign-up">Sign up</Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </div>
-*/
