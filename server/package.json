@@ -7,7 +7,7 @@
         "node5": "nodemon --watch src -e js Api.js 4005 http://localhost:4005"
     },
     "dependencies": {
-        "bootstrap": "^5.0.2",
+        
         "crypto-js": "^4.1.1",
         "express": "^4.17.1",
         "request-promise": "^4.2.6"
