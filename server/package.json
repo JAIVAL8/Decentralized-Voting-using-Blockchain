@@ -1,4 +1,7 @@
 {
+    "name": "backend",
+    "version": "0.1.0",
+    "private": true,
     "scripts": {
         "node1": "nodemon --watch src -e js Api.js 4001 http://localhost:4001",
         "node2": "nodemon --watch src -e js Api.js 4002 http://localhost:4002",
