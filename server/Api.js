@@ -28,6 +28,19 @@ app.post('/transaction', function (req, res) {
         }
     );
 });
+app.post('/SetdifficultyandMininglimits', function (req, res) {
+    const diff = parseInt(req.body.diff);
+    const max = parseInt(req.body.max);
+     votechain.difficulty=diff;
+    votechain.maxTransperblock=max;
+    res.json(
+        {
+            message: `Difficulty set for a block.`
+        }
+    );
+    console.log("chain diff:"+votechain.difficulty);
+    console.log("Max Transactions per Block:"+votechain.maxTransperblock);
+});
 app.post('/transaction/broadcast', function (req, res) {
     
     const transaction= votechain.addTransactions(req.body.uid,

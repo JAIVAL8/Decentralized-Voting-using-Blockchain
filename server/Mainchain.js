@@ -36,9 +36,10 @@ class Blockchain{
     constructor(){
         this.chain=[this.createGensis()];
         this.pendingTransactions = [];
-        this.difficulty=2;     //Setting the difficulty
+        this.difficulty;     //Setting the difficulty
         this.nodeUrl = nodeUrl;         
         this.networkNodes = [];
+        this.maxTransperblock;//setting max amount of transaction per block
     }   
     createGensis(){
         return new Block('IT ','Jaival Faisal Bautik ','0');
@@ -68,13 +69,13 @@ class Blockchain{
      }
     PendingTransactions(Transactions){
         let total=this.pendingTransactions.length;
-        if(total<10){
+        if(total<this.maxTransperblock){
             this.pendingTransactions.push(Transactions);
         }
         else{
             this.pendingTransactions.push(Transactions);
             //console.log(this.pendingTransactions);
-            const extra=this.pendingTransactions[10];
+            const extra=this.pendingTransactions[maxTransperblock];
             //console.log(extra);
             this.addBlock(new Block);
 
