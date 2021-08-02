@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 function Navbar() {
   return (
           
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" >
     <div class="container-fluid">
       <a className="navbar-brand" href="/"><h1>F-votechain</h1></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,10 +15,10 @@ function Navbar() {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="/Login">Login</a>
+            <a class="nav-link" href="/Login"><h4>Login</h4></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/Signup">SignUp</a>
+            <a class="nav-link" href="/Signup"><h4>SignUp</h4></a>
           </li> 
         </ul>  
       </div>

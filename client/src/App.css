@@ -214,16 +214,18 @@ body {
   height: 90vh;
   display: grid;
   place-items: center;
+  background-color: #189cf0;
 }
 
 .signup {
   height: 85vh;
   display: grid;
   place-items: center;
+  background-color: #189cf0;
 }
 
 .signup-content {
-  padding: 75px 0;
+  padding: 50px 0 ;
 }
 
 .signup-form,
@@ -472,7 +474,7 @@ label.valid:after {
 
 .signin-content {
   padding-top: 67px;
-  padding-bottom: 87px;
+  padding-bottom: 40px;
 
 }
 
@@ -932,6 +934,7 @@ label.valid:after {
   outline: none;
   cursor: pointer;
   margin-top: 24px;
+
 }
 
 .panel {
@@ -943,7 +946,7 @@ label.valid:after {
 
 .button {
   display: inline-block;
-  background: #97cbfa;
+  background: #9afa97;
   border-radius: 5px;
   height: 48px;
   transition: all 200ms ease;
