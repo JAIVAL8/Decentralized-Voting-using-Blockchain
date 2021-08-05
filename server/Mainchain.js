@@ -14,7 +14,7 @@ class Block{
     }
     
     calculateHash(){
-        return SHA256(this.uid+this.previousHash+this.timestamp+this.nonce+JSON.stringify(this.Transactions)).toString();
+        return SHA256(this.previousHash+this.timestamp+this.nonce+JSON.stringify(this.Transactions)).toString();
     }
 
     mineBlock(difficulty){
@@ -42,7 +42,7 @@ class Blockchain{
         this.maxTransperblock;//setting max amount of transaction per block
     }   
     createGensis(){
-        return new Block('IT ','Jaival Faisal Bautik ','0');
+        return new Block('IT','Jaival Faisal Bautik','0');
     }
 
     getLatestblock(){
@@ -52,7 +52,7 @@ class Blockchain{
     addBlock(newBLock){
         newBLock.previousHash=this.getLatestblock().hash;
         newBLock.timestamp=Date.now();
-        newBLock.Transactions=this.pendingTransactions.slice(0,10);
+        newBLock.Transactions=this.pendingTransactions.slice(0,this.maxTransperblock);
         newBLock.mineBlock(this.difficulty);
         this.chain.push(newBLock);
     }
@@ -75,7 +75,7 @@ class Blockchain{
         else{
             this.pendingTransactions.push(Transactions);
             //console.log(this.pendingTransactions);
-            const extra=this.pendingTransactions[maxTransperblock];
+            const extra=this.pendingTransactions[this.maxTransperblock];
             //console.log(extra);
             this.addBlock(new Block);
 
@@ -92,10 +92,20 @@ class Blockchain{
     
 
     isChainValid(){
+        const genesisBlock = this.chain[0];
+        if ((genesisBlock.timestamp !== 'IT') ||
+            (genesisBlock.nonce !== 0) ||
+          (genesisBlock.previousHash !== '0') ||
+          (genesisBlock.Transactions !== 'Jaival Faisal Bautik')) {
+            console.log("here");
+            return false;
+            }
+        
         for(let i=1;i< this.chain.length;i++){
             const currentblock=this.chain[i];
             const previousblock=this.chain[i-1];
             
+
             if(currentblock.hash!==currentblock.calculateHash()){
                 return false;
             }
@@ -107,20 +117,77 @@ class Blockchain{
         return true;
     }
     DoesVoteExist(uid){
-
-        for(let i=1;i< this.chain.length;i++){
-            const currentblock=this.chain[i].Transactions;
+      //console.log(this.getLatestblock().Transactions);
+      //console.log(this.pendingTransactions);
+      console.log(this.getLatestblock().Transactions=='Jaival Faisal Bautik' );
+   
+      console.log(this.pendingTransactions.length==0);
+        if(this.getLatestblock().Transactions=='Jaival Faisal Bautik' && this.pendingTransactions.length==0){
+            console.log('here@does1');
+            return false;
+        }
+        else if(this.getLatestblock().Transactions=='Jaival Faisal Bautik' && this.pendingTransactions.length!=0){
+            console.log('here@does2');
+            for(let i=0;i< this.pendingTransactions.length;i++){
+                
+                const current= Object.values(this.pendingTransactions[i]);
+                console.log(current.length);
+               
+                    console.log(current[0]);
+                    if(current[0]==uid){
+                        console.log('True uid Exist');
+                       
+                        return true;
+                    }
+                
+            } 
+        }
+        // else if(this.getLatestblock().Transactions!='Jaival Faisal Bautik'&&this.pendingTransactions.length==0){
+        //     console.log('here@does3');
             
-            for(let j=0;j< currentblock.length;j++){
             
-                if(currentblock[j].uid==uid){
-                    console.log('True uid Exist');
-                    console.log(currentblock[j].uid);
-                    return true;
+        //     for(let i=1;i< this.chain.length;i++){
+                
+        //         const currentblock=this.chain[i].Transactions;
+        //         console.log(currentblock);
+        //         for(let j=0;j< currentblock.length;j++){
+                
+        //             if(currentblock[j].uid==uid){
+        //                 console.log('True uid Exist');
+        //                 console.log(currentblock[j].uid);
+        //                 return true;
+        //             }
+        //         }
+        //     }
+        // }
+        else if(this.getLatestblock().Transactions!='Jaival Faisal Bautik'&&this.pendingTransactions.length!=0){
+            console.log('here@does4');
+            for(let i=0;i< this.pendingTransactions.length;i++){
+                const current= Object.values(this.pendingTransactions[i]);
+                console.log(current.length);
+               
+                    console.log(current[0]);
+                    if(current[0]==uid){
+                        console.log('True uid Exist');
+                       
+                        return true;
+                    }
+            }
+            for(let i=1;i< this.chain.length;i++){
+               
+                const currentblock=this.chain[i].Transactions;
+                console.log(currentblock);
+                for(let j=0;j< currentblock.length;j++){
+                
+                    if(currentblock[j].uid==uid){
+                        console.log('True uid Exist');
+                        console.log(currentblock[j].uid);
+                        return true;
+                    }
                 }
             }
-
         }
+            
     }
     Results(){
 

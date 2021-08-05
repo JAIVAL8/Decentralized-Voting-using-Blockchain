@@ -8,6 +8,7 @@ const Blockchain = require('./Mainchain');
 const votechain = new Blockchain();
 const port = process.argv[2];
 const reqPromise = require('request-promise');
+const { request } = require('express');
 
 
 
@@ -41,6 +42,34 @@ app.post('/SetdifficultyandMininglimits', function (req, res) {
     console.log("chain diff:"+votechain.difficulty);
     console.log("Max Transactions per Block:"+votechain.maxTransperblock);
 });
+
+app.post('/broadcast-node-mininglimit', function (req, res) {
+    const diff = parseInt(req.body.diff);
+    const max = parseInt(req.body.max);
+    votechain.difficulty=diff;
+    votechain.maxTransperblock=max;
+    const requests = [];
+    votechain.networkNodes.forEach(networkNode => {
+        const requestOptions = {
+            uri: networkNode + '/SetdifficultyandMininglimits',
+            method: 'POST',
+            body: { diff: diff,max:max },
+            json: true
+        };
+
+        requests.push(reqPromise(requestOptions));
+    });
+
+    Promise.all(requests)
+        .then(data =>  {
+            res.json(
+                {
+                    message: `Broadcasting Limits successfully!`
+                }
+            );
+        });
+});
+
 app.post('/transaction/broadcast', function (req, res) {
     
     const transaction= votechain.addTransactions(req.body.uid,
@@ -49,9 +78,17 @@ app.post('/transaction/broadcast', function (req, res) {
         req.body.age,
         req.body.gender
         );
-       // console.log(transaction);
+        //console.log(transaction.uid);
+        //console.log(votechain.DoesVoteExist(transaction.uid))
     if(votechain.DoesVoteExist(transaction.uid)){
        //Alert('Vote Already Exist') ;
+      
+       console.log('here11');
+       res.json(
+        {
+            message: `vote already exist!`
+        }
+        );
     }
     else{
         votechain.PendingTransactions(transaction );
@@ -176,25 +213,30 @@ app.get('/consensus', function (req, res) {
             let maxChainLength = currentChainLength;
             let longestChain = null;
             let pendingTransactions = null;
-
+            let difficulty=null;
+            let maxTransperblock=null;
             blockchains.forEach(blockchain => {
                 if (blockchain.chain.length > maxChainLength) {
                     maxChainLength = blockchain.chain.length;
                     longestChain = blockchain.chain;
                     pendingTransactions = blockchain.pendingTransactions;
+                    difficulty=blockchain.difficulty;
+                   maxTransperblock= blockchain.maxTransperblock;
                 }
             });
 
             if (!longestChain ||
-                (longestChain && !votechain.isChainValid(longestChain))) {
+                (longestChain && !votechain.isChainValid())) {
+                    
                 res.json({
                     message: 'Current chain cannot be replaced!',
                     chain: votechain.chain
                 });
-            } else if (longestChain && votechain.isChainValid(longestChain)) {
+            } else if (longestChain && votechain.isChainValid()) {
                 votechain.chain = longestChain;
                 votechain.pendingTransactions = pendingTransactions;
-
+                votechain.difficulty=difficulty;
+                votechain.maxTransperblock= maxTransperblock;
                 res.json({
                     message: 'Chain is updated!',
                     chain: votechain.chain
