@@ -1,21 +1,37 @@
-import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import React, { useEffect, createContext, useReducer, useContext } from "react";
+import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
 import "./App.css";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import { reducer, initialState } from "./reducers/userReducer";
+
+export const UserContext = createContext();
+
 const Routing = () => {
+  const history = useHistory();
+  const { state, dispatch } = useContext(UserContext);
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      dispatch({ type: "USER", payload: user });
+    } else {
+      if (!history.location.pathname.startsWith("/reset")) {
+        history.push("/login");
+      }
+    }
+  }, []);
   return (
     <Switch>
       {/* < Route exact path="/">
         <Home />
       </Route> */}
-      <Route path="/Login">
+      <Route path="/login">
         <Login />
       </Route>
-      <Route path="/Signup">
+      <Route path="/signup">
         <SignUp />
       </Route>
     </Switch>
@@ -23,11 +39,14 @@ const Routing = () => {
 };
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routing />
-    </BrowserRouter>
+    <UserContext.Provider value={{ state, dispatch }}>
+      <BrowserRouter>
+        <Navbar />
+        <Routing />
+      </BrowserRouter>
+    </UserContext.Provider>
   );
 }
 
