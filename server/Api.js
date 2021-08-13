@@ -72,13 +72,14 @@ app.post('/broadcast-node-mininglimit', function (req, res) {
 
 app.post('/transaction/broadcast', function (req, res) {
     
-    const transaction= votechain.addTransactions(req.body.uid,
+    const transaction= votechain.addTransactions(req.body.uId,
         req.body.receiver,
-        req.body.location,
+        req.body.city,
         req.body.age,
         req.body.gender
         );
-        //console.log(transaction.uid);
+        console.log(transaction);
+
         //console.log(votechain.DoesVoteExist(transaction.uid))
     if(votechain.DoesVoteExist(transaction.uid)){
        //Alert('Vote Already Exist') ;

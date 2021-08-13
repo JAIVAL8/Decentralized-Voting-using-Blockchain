@@ -88,11 +88,11 @@ router.post("/signin", (req, res) => {
 
     const decryptedPhoneNo = decrypt(savedUser.phoneNo, password);
     const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
-    const { _id, uId, email, phoneNo, gender, age, city } = savedUser;
+    const { _id, uId,  gender, age, city } = savedUser;
 
     res.json({
       mobileNo: decryptedPhoneNo,
-      user: { _id, uId, email, phoneNo, gender, age, city },
+      user: { _id, uId, gender, age, city },
       token,
     });
     // res.json({ message: "signed in successfully" });

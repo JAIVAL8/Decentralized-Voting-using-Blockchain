@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { reducer, initialState } from "./reducers/userReducer";
+import Home from "./components/Home";
 
 export const UserContext = createContext();
 
@@ -33,6 +34,9 @@ const Routing = () => {
       </Route>
       <Route path="/signup">
         <SignUp />
+      </Route>
+      <Route path="/">
+        <Home/>
       </Route>
     </Switch>
   );
