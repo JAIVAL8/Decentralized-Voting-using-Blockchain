@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "server",
   "version": "1.0.0",
   "description": "Vote-Chain",
@@ -14,4 +15,22 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.5"
   }
+=======
+    "name": "backend",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "node1": "nodemon --watch src -e js Api.js 4001 http://localhost:4001",
+        "node2": "nodemon --watch src -e js Api.js 4002 http://localhost:4002",
+        "node3": "nodemon --watch src -e js Api.js 4003 http://localhost:4003",
+        "node4": "nodemon --watch src -e js Api.js 4004 http://localhost:4004",
+        "node5": "nodemon --watch src -e js Api.js 4005 http://localhost:4005"
+    },
+    "dependencies": {
+        
+        "crypto-js": "^4.1.1",
+        "express": "^4.17.1",
+        "request-promise": "^4.2.6"
+    }
+>>>>>>> origin/jaivalp
 }
