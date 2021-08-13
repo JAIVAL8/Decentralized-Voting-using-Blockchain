@@ -1,6 +1,7 @@
 const SHA256=require('crypto-js/sha256');
 const nodeUrl = process.argv[3];  
 class Block{
+    //Block constructor 
     constructor(timestamp,Transactions,previousHash=''){
         
          
@@ -12,11 +13,11 @@ class Block{
          this.nonce=0;
 
     }
-    
+    //hash generation func.
     calculateHash(){
         return SHA256(this.previousHash+this.timestamp+this.nonce+JSON.stringify(this.Transactions)).toString();
     }
-
+    //mining difficulty func.
     mineBlock(difficulty){
         while(this.hash.substring(0,difficulty)!== Array(difficulty+1).join('0')){
             this.nonce++;
@@ -40,15 +41,17 @@ class Blockchain{
         this.nodeUrl = nodeUrl;         
         this.networkNodes = [];
         this.maxTransperblock;//setting max amount of transaction per block
-    }   
+    }  
+    
+    //Genesis Block
     createGensis(){
         return new Block('IT','Jaival Faisal Bautik','0');
     }
-
+    //Returns last block
     getLatestblock(){
         return this.chain[this.chain.length-1];
     }
-
+    //New block adding once mining is done
     addBlock(newBLock){
         newBLock.previousHash=this.getLatestblock().hash;
         newBLock.timestamp=Date.now();
@@ -56,6 +59,7 @@ class Blockchain{
         newBLock.mineBlock(this.difficulty);
         this.chain.push(newBLock);
     }
+
     addTransactions(uid,receiver,location,age,gender){
         const Transactions={
             uid:uid,
@@ -97,7 +101,7 @@ class Blockchain{
             (genesisBlock.nonce !== 0) ||
           (genesisBlock.previousHash !== '0') ||
           (genesisBlock.Transactions !== 'Jaival Faisal Bautik')) {
-            console.log("here");
+            console.log("valid");
             return false;
             }
         
@@ -116,6 +120,8 @@ class Blockchain{
         }
         return true;
     }
+
+    //Exisiting uid check function
     DoesVoteExist(uid){
       //console.log(this.getLatestblock().Transactions);
       //console.log(this.pendingTransactions);
