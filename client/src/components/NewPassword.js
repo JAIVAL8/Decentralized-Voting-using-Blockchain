@@ -60,7 +60,7 @@ function NewPassword() {
           );
           history.push("/login");
         }
-        console.log("123334348943872782387");
+        //console.log("123334348943872782387");
       })
       .catch((error) => {
         console.log(error);
