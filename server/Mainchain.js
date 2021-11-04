@@ -51,11 +51,26 @@ class Blockchain{
     getLatestblock(){
         return this.chain[this.chain.length-1];
     }
-    //New block adding once mining is done
-    addBlock(newBLock){
+    
+    ForceTransactionBlock(){
+       
+        this.addBlock(new Block,true);
+
+        console.log(' Forced-Mining!!!') ;
+        
+
+        this.pendingTransactions=[]; 
+    }
+    //New block adding once mining is done   
+    addBlock(newBLock,state){
         newBLock.previousHash=this.getLatestblock().hash;
         newBLock.timestamp=Date.now();
+        if(state==false){
         newBLock.Transactions=this.pendingTransactions.slice(0,this.maxTransperblock);
+    }
+        else{
+            newBLock.Transactions=this.pendingTransactions;
+        }
         newBLock.mineBlock(this.difficulty);
         this.chain.push(newBLock);
     }
@@ -81,7 +96,7 @@ class Blockchain{
             //console.log(this.pendingTransactions);
             const extra=this.pendingTransactions[this.maxTransperblock];
             //console.log(extra);
-            this.addBlock(new Block);
+            this.addBlock(new Block,false);
 
            console.log('Mining since pending list is full!!!') ;
            //console.log("chain:"+JSON.stringify(this.chain,null,4) ) ;
@@ -89,11 +104,10 @@ class Blockchain{
            this.pendingTransactions=[]; 
            this.pendingTransactions.push(extra);
            //console.log(this.pendingTransactions);
-
         }
         
     }
-    
+   
 
     isChainValid(){
         const genesisBlock = this.chain[0];

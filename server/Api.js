@@ -34,6 +34,14 @@ app.post('/transaction', function (req, res) {
         }
     );
 });
+app.get('/Forcesave', function (req, res) {
+    votechain.ForceTransactionBlock();
+    res.json(
+        {
+            message: `All Pending Transaction will be added to block Right away.`
+        }
+    );
+});
 app.post('/SetdifficultyandMininglimits', function (req, res) {
     const diff = parseInt(req.body.diff);
     const max = parseInt(req.body.max);
