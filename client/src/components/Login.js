@@ -154,8 +154,8 @@ function Login() {
           // const recaptcha = new firebase.auth.RecaptchaVerifier(
           //   "recaptcha-container"
           // );
-          const number = "+91" + data.mobileNo;
-          // const number = "+911234567890";
+          // const number = "+91" + data.mobileNo;
+          const number = "+911234567890";
           var n1 = number.substr(0, 5);
           var n2 = number.substr(10);
           var n = n1 + "*****" + n2;
@@ -191,12 +191,14 @@ function Login() {
                     localStorage.setItem("jwt", data.token);
                     localStorage.setItem("user", JSON.stringify(data.user));
                     dispatch({ type: "USER", payload: data.user });
-                    toast.success("sucessfully signed in", {
-                      position: "top-center",
-                    });
-                    window.setTimeout(() => {
-                      history.push("/");
-                    }, 1700);
+                    // toast.success("successfully signed in", {
+                    //   position: "top-center",
+                    // });
+
+                    swal("🎉✨", "Signed in successfully!", "success");
+                    // window.setTimeout(() => {
+                    history.push("/");
+                    // }, 1700);
                   })
                   .catch((err) => {
                     toast.error("*OTP* does not match!", {
@@ -242,12 +244,23 @@ function Login() {
               <figure>
                 <img src={loginpic} alt="registration pic" />
               </figure>
-              <Link to="/signup">Create an account?</Link>
+              <Link
+                to="/signup"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                Create an account? <span style={{ color: "blue" }}>signup</span>
+              </Link>
+              <Link
+                to="/reset-password"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                Forgot <span style={{ color: "blue" }}>password?</span>
+              </Link>
             </div>
             <div className="signin-form">
               <h2 className="form-title">Login</h2>
               <form className="register-form" id="register-form">
-                <div id="sign-in-button"></div>
+                {/* <div id="sign-in-button"></div> */}
                 <div className="form-group">
                   <label htmlFor="aadharNo">
                     <i className="zmdi zmdi-account  material-icons-name"></i>

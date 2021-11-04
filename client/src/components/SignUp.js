@@ -3,6 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import signpic from "../images/signup.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import swal from "sweetalert";
 
 function SignUp() {
   const history = useHistory();
@@ -44,12 +45,14 @@ function SignUp() {
         position: "top-center",
       });
       return;
-    } else if (!/^[789]\d{9}$/.test(phone)) {
-      toast.error("*Phone No* should be of 10 digit and valid", {
-        position: "top-center",
-      });
-      return;
-    } else if (gender !== "Male" && gender !== "Female" && gender !== "Other") {
+    }
+    // else if (!/^[789]\d{9}$/.test(phone)) {
+    //   toast.error("*Phone No* should be of 10 digit and valid", {
+    //     position: "top-center",
+    //   });
+    //   return;
+    // }
+    else if (gender !== "Male" && gender !== "Female" && gender !== "Other") {
       toast.error(
         "*Gender* should be either Male or Female or Other (case sensitive)",
         {
@@ -109,12 +112,19 @@ function SignUp() {
             position: "top-center",
           });
         } else {
-          toast.success(data.message, {
-            position: "top-center",
-          });
-          window.setTimeout(() => {
-            history.push("/login");
-          }, 1700);
+          // toast.success(data.message, {
+          //   position: "top-center",
+          // });
+          // window.setTimeout(() => {
+          //   history.push("/login");
+          // }, 1700);
+          swal(
+            "signed up successfully🎉✨",
+            "Kindly check your Email for your Unique_Id (uId)",
+            "success"
+          );
+
+          history.push("/login");
         }
       })
       .catch((err) => {
@@ -243,7 +253,13 @@ function SignUp() {
               <figure>
                 <img src={signpic} alt="registration pic" />
               </figure>
-              <Link to="/login">Already have an account?</Link>
+              <Link
+                to="/login"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                Already have an account?{" "}
+                <span style={{ color: "blue" }}>login</span>
+              </Link>
             </div>
           </div>
         </div>

@@ -7,6 +7,8 @@ import Navbar from "./components/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { reducer, initialState } from "./reducers/userReducer";
+import Reset from "./components/Reset";
+import NewPassword from "./components/NewPassword";
 
 export const UserContext = createContext();
 
@@ -18,7 +20,7 @@ const Routing = () => {
     if (user) {
       dispatch({ type: "USER", payload: user });
     } else {
-      if (!history.location.pathname.startsWith("/reset")) {
+      if (!history.location.pathname.startsWith("/reset-password")) {
         history.push("/login");
       }
     }
@@ -33,6 +35,12 @@ const Routing = () => {
       </Route>
       <Route path="/signup">
         <SignUp />
+      </Route>
+      <Route exact path="/reset-password">
+        <Reset />
+      </Route>
+      <Route path="/reset-password/:token">
+        <NewPassword />
       </Route>
     </Switch>
   );
