@@ -40,22 +40,38 @@ router.post("/signup", (req, res) => {
     confirmpass,
   } = req.body;
 
-  const txt = aadharNo + password;
+  const hashedAadhar = CryptoJS.SHA256(aadharNo).toString();
+
+  const txt = hashedAadhar + password;
   // console.log(uid);
   const uid = CryptoJS.SHA256(txt).toString();
   //console.log(hash);
 
-  User.findOne({ uId: uid })
+  //console.log(encryptedAadhar);
+  User.findOne({ aadhar: hashedAadhar })
     .then((savedUser) => {
+      //console.log(savedUser);
       if (savedUser) {
-        return res.status(422).json({ error: "User already exists" });
+        return res
+          .status(422)
+          .json({ error: "User already exists with this Aadhar No." });
       }
+      // if (savedUser.aadhar == aadharNo) {
+      //   return res
+      //     .status(422)
+      //     .json({ error: "User already exists with that Aadhar No." });
+      // }
+      // if (savedUser.email == email) {
+      //   return res
+      //     .status(422)
+      //     .json({ error: "User already exists with that email" });
+      // }
       const encryptedPhone = encrypt(phone.toString(), password);
       const encryptedGender = encrypt(gender, SECRET_KEY);
       const encryptedAge = encrypt(age.toString(), SECRET_KEY);
       const encryptedCity = encrypt(city, SECRET_KEY);
       const encryptedEmail = encrypt(email, SECRET_KEY);
-      const encryptedAadhar = encrypt(aadharNo, SECRET_KEY);
+      //const encryptedAadhar = encrypt(hashedAadhar, SECRET_KEY);
 
       const user = new User({
         uId: uid,
@@ -64,7 +80,7 @@ router.post("/signup", (req, res) => {
         gender: encryptedGender,
         age: encryptedAge,
         city: encryptedCity,
-        aadhar: encryptedAadhar,
+        aadhar: hashedAadhar,
       });
 
       user
@@ -114,7 +130,8 @@ router.post("/signup", (req, res) => {
 router.post("/signin", (req, res) => {
   const { aadharNo, password } = req.body;
 
-  const txt = aadharNo + password;
+  const hashedAadhar = CryptoJS.SHA256(aadharNo).toString();
+  const txt = hashedAadhar + password;
   // console.log(txt);
   const uid = CryptoJS.SHA256(txt).toString();
   //console.log(uid);
@@ -156,8 +173,9 @@ router.post("/reset-password", (req, res) => {
       const link = HOST + "/reset-password/" + token;
       // console.log(token);
       // console.log(typeof token);
+      //console.log(decrypt(user.aadhar, SECRET_KEY));
       user.resetToken = token;
-      user.expireToken = Date.now() + 3600000;
+      user.expireToken = Date.now() + 300000;
       // user.save().then((result) => {
       let transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -178,7 +196,7 @@ router.post("/reset-password", (req, res) => {
             "<br><h3>Click on this link to reset <a href='" +
             link +
             "'>password!</a></h3>" +
-            "<br><p>This link is valid only for 60 minutes!!</p>",
+            "<br><p>This link is valid only for 5 minutes!!</p>",
         },
         (err, res) => {
           if (err) {
@@ -206,17 +224,20 @@ router.post("/new-password", (req, res) => {
         return res.status(422).json({ err: "Try again session expired" });
       }
 
-      const decryptedAadhar = decrypt(user.aadhar, SECRET_KEY);
+      const hashedAadhar = user.aadhar;
       //console.log(decryptedAadhar);
-      const txt = decryptedAadhar + newPassword;
+      const txt = hashedAadhar + newPassword;
       // console.log(uid);
       const uid = CryptoJS.SHA256(txt).toString();
 
       const decryptedEmail = decrypt(user.email, SECRET_KEY);
-
+      //console.log(req.body.phone);
+      const encryptedPhone = encrypt(req.body.phone.toString(), newPassword);
+      //console.log(encryptedPhone);
       user.uId = uid;
       user.resetToken = undefined;
       user.expireToken = undefined;
+      user.phoneNo = encryptedPhone;
       user
         .save()
         .then((savedUser) => {

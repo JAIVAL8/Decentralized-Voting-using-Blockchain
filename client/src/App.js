@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { reducer, initialState } from "./reducers/userReducer";
 import Reset from "./components/Reset";
 import NewPassword from "./components/NewPassword";
+import CandidateList from "./components/CandidateList";
 
 export const UserContext = createContext();
 
@@ -27,9 +28,9 @@ const Routing = () => {
   }, []);
   return (
     <Switch>
-      {/* < Route exact path="/">
-        <Home />
-      </Route> */}
+      <Route exact path="/">
+        <CandidateList />
+      </Route>
       <Route path="/login">
         <Login />
       </Route>

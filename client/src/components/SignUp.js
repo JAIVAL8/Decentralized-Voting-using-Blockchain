@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import signpic from "../images/signup.svg";
 import { ToastContainer, toast } from "react-toastify";
@@ -7,6 +7,8 @@ import swal from "sweetalert";
 
 function SignUp() {
   const history = useHistory();
+  const form1 = useRef(null);
+  const form2 = useRef(null);
   const [aadharNo, setAadharNo] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpass, setConfirmPass] = useState("");
@@ -45,14 +47,12 @@ function SignUp() {
         position: "top-center",
       });
       return;
-    }
-    // else if (!/^[789]\d{9}$/.test(phone)) {
-    //   toast.error("*Phone No* should be of 10 digit and valid", {
-    //     position: "top-center",
-    //   });
-    //   return;
-    // }
-    else if (gender !== "Male" && gender !== "Female" && gender !== "Other") {
+    } else if (!/^[789]\d{9}$/.test(phone)) {
+      toast.error("*Phone No* should be of 10 digit and valid", {
+        position: "top-center",
+      });
+      return;
+    } else if (gender !== "Male" && gender !== "Female" && gender !== "Other") {
       toast.error(
         "*Gender* should be either Male or Female or Other (case sensitive)",
         {
@@ -179,13 +179,32 @@ function SignUp() {
                   <label htmlFor="gender">
                     <i className="zmdi zmdi-male-female material-icons-name"></i>
                   </label>
-                  <input
+                  {/* <input
                     type="text"
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
                     autoComplete="off"
                     placeholder="Gender"
-                  />
+                  /> */}
+                  <div
+                    className="form-group select-option"
+                    style={{ marginLeft: "1rem" }}
+                  >
+                    <select
+                      className="form-control"
+                      id="exampleFormControlSelect1"
+                      ref={form1}
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
+                    >
+                      <option value="" disabled selected>
+                        Gender
+                      </option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Others">Others</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div className="form-group">
@@ -204,13 +223,33 @@ function SignUp() {
                   <label htmlFor="location">
                     <i className="zmdi zmdi-pin material-icons-name"></i>
                   </label>
-                  <input
+                  {/* <input
                     type="text"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     autoComplete="off"
                     placeholder="Your City"
-                  />
+                  /> */}
+                  <div
+                    className="form-group select-option"
+                    style={{ marginLeft: "1rem" }}
+                  >
+                    <select
+                      className="form-control "
+                      id="exampleFormControlSelect1"
+                      ref={form2}
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                    >
+                      <option value="" disabled selected>
+                        City
+                      </option>
+                      <option value="Vasai">Vasai</option>
+                      <option value="Borivali">Borivali</option>
+                      <option value="Thane">Thane</option>
+                      <option value="Bhiwandi">Bhiwandi</option>
+                    </select>
+                  </div>
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">

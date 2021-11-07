@@ -9,10 +9,11 @@ function NewPassword() {
   const history = useHistory();
   const [password, setPassword] = useState("");
   const [confirmpass, setConfirmPass] = useState("");
+  const [phone, setPhone] = useState("");
   const { token } = useParams();
   // console.log("====>", token);
   const postData = () => {
-    if (!password || !confirmpass) {
+    if (!password || !confirmpass || !phone) {
       toast.warning("Please enter all the fields!", {
         position: "top-center",
       });
@@ -34,6 +35,11 @@ function NewPassword() {
         position: "top-center",
       });
       return;
+    } else if (!/^[789]\d{9}$/.test(phone)) {
+      toast.error("*Phone No* should be of 10 digit and valid", {
+        position: "top-center",
+      });
+      return;
     }
 
     fetch("/new-password", {
@@ -44,6 +50,7 @@ function NewPassword() {
       body: JSON.stringify({
         password,
         token,
+        phone,
       }),
     })
       .then((res) => res.json())
@@ -102,6 +109,18 @@ function NewPassword() {
                     onChange={(e) => setConfirmPass(e.target.value)}
                     autoComplete="off"
                     placeholder="Confirm Your Password"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="phone">
+                    <i className="zmdi zmdi-phone-in-talk material-icons-name"></i>
+                  </label>
+                  <input
+                    type="number"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    autoComplete="off"
+                    placeholder="Your Mobile No."
                   />
                 </div>
               </form>
