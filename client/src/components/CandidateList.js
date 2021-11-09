@@ -120,9 +120,10 @@ function CandidateList() {
                       //dispatch({ type: "VOTE", payload: { voted: true } });
                       // console.log(state);
                       setDisable(true);
-                      const { uid,  gender, age,location} =user;
+                      const {uId,city, gender, age} =user;
+                      
                       const  receiver = candidateName;
-                      console.log(uid);
+                      console.log(uId);
                  fetch('http://localhost:4001/transaction/broadcast', {
                   
                  method: "post",
@@ -132,7 +133,7 @@ function CandidateList() {
                     
                   },
                   body:JSON.stringify ({
-                  uId:uId,receiver:receiver,city:city,age:age,gender:gender
+                  uid:uId,receiver:candidateName,location:city,age:age,gender:gender
                    
                   }),
                   
