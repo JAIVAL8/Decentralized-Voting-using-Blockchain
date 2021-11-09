@@ -51,6 +51,16 @@ class Blockchain{
     getLatestblock(){
         return this.chain[this.chain.length-1];
     }
+    //Forces the  incomplete block
+    ForceTransactionBlock(){
+       
+        this.addBlock(new Block,true);
+
+        console.log(' Forced-Mining!!!') ;
+        
+
+        this.pendingTransactions=[]; 
+    }
     //New block adding once mining is done
     addBlock(newBLock){
         newBLock.previousHash=this.getLatestblock().hash;
