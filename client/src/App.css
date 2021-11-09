@@ -740,6 +740,16 @@ label.valid:after {
     -o-justify-content: center;
     -ms-justify-content: center;
   }
+  #exampleFormControlSelect1 {
+    width: 90%;
+    margin-left: 1rem;
+  }
+
+  /* @media screen and (min-width: 1024px) {
+    .select-option {
+      margin-left: 1rem;
+    }
+  } */
 
   .form-button {
     text-align: center;

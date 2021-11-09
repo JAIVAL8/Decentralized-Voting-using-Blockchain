@@ -7,6 +7,10 @@ import Navbar from "./components/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { reducer, initialState } from "./reducers/userReducer";
+import Reset from "./components/Reset";
+import NewPassword from "./components/NewPassword";
+import CandidateList from "./components/CandidateList";
+import Dashboard from "./components/Dashboard";
 
 export const UserContext = createContext();
 
@@ -18,21 +22,30 @@ const Routing = () => {
     if (user) {
       dispatch({ type: "USER", payload: user });
     } else {
-      if (!history.location.pathname.startsWith("/reset")) {
+      if (!history.location.pathname.startsWith("/reset-password")) {
         history.push("/login");
       }
     }
   }, []);
   return (
     <Switch>
-      {/* < Route exact path="/">
-        <Home />
-      </Route> */}
+      <Route exact path="/">
+        <CandidateList />
+      </Route>
       <Route path="/login">
         <Login />
       </Route>
       <Route path="/signup">
         <SignUp />
+      </Route>
+      <Route exact path="/reset-password">
+        <Reset />
+      </Route>
+      <Route path="/reset-password/:token">
+        <NewPassword />
+      </Route>
+      <Route path="/dashboard">
+        <Dashboard />
       </Route>
     </Switch>
   );

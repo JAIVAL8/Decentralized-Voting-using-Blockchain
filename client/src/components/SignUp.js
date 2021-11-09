@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import signpic from "../images/signup.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import swal from "sweetalert";
 
 function SignUp() {
   const history = useHistory();
+  const form1 = useRef(null);
+  const form2 = useRef(null);
   const [aadharNo, setAadharNo] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpass, setConfirmPass] = useState("");
@@ -49,25 +52,27 @@ function SignUp() {
         position: "top-center",
       });
       return;
-    } else if (gender !== "Male" && gender !== "Female" && gender !== "Other") {
-      toast.error(
-        "*Gender* should be either Male or Female or Other (case sensitive)",
-        {
-          position: "top-center",
-        }
-      );
-      return;
-    } else if (!(age >= 18 && age <= 110)) {
+    }
+    // else if (gender !== "Male" && gender !== "Female" && gender !== "Other") {
+    //   toast.error(
+    //     "*Gender* should be either Male or Female or Other (case sensitive)",
+    //     {
+    //       position: "top-center",
+    //     }
+    //   );
+    //   return;    }
+    else if (!(age >= 18 && age <= 110)) {
       toast.error("*Age* should be above or equal 18", {
         position: "top-center",
       });
       return;
-    } else if (!/^[a-zA-Z]+$/.test(city)) {
-      toast.error("*City* is incorrect (only text)", {
-        position: "top-center",
-      });
-      return;
-    } else if (
+    }
+    // else if (!/^[a-zA-Z]+$/.test(city)) {
+    //   toast.error("*City* is incorrect (only text)", {
+    //     position: "top-center",
+    //   });
+    //   return;    }
+    else if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(
         password
       )
@@ -109,12 +114,19 @@ function SignUp() {
             position: "top-center",
           });
         } else {
-          toast.success(data.message, {
-            position: "top-center",
-          });
-          window.setTimeout(() => {
-            history.push("/login");
-          }, 1700);
+          // toast.success(data.message, {
+          //   position: "top-center",
+          // });
+          // window.setTimeout(() => {
+          //   history.push("/login");
+          // }, 1700);
+          swal(
+            "signed up successfully🎉✨",
+            "Kindly check your Email for your Unique_Id (uId)",
+            "success"
+          );
+
+          history.push("/login");
         }
       })
       .catch((err) => {
@@ -169,13 +181,32 @@ function SignUp() {
                   <label htmlFor="gender">
                     <i className="zmdi zmdi-male-female material-icons-name"></i>
                   </label>
-                  <input
+                  {/* <input
                     type="text"
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
                     autoComplete="off"
                     placeholder="Gender"
-                  />
+                  /> */}
+                  <div
+                    className="form-group select-option"
+                    style={{ marginLeft: "1rem" }}
+                  >
+                    <select
+                      className="form-control"
+                      id="exampleFormControlSelect1"
+                      ref={form1}
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
+                    >
+                      <option value="" disabled selected>
+                        Gender
+                      </option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Others">Others</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div className="form-group">
@@ -194,13 +225,33 @@ function SignUp() {
                   <label htmlFor="location">
                     <i className="zmdi zmdi-pin material-icons-name"></i>
                   </label>
-                  <input
+                  {/* <input
                     type="text"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     autoComplete="off"
                     placeholder="Your City"
-                  />
+                  /> */}
+                  <div
+                    className="form-group select-option"
+                    style={{ marginLeft: "1rem" }}
+                  >
+                    <select
+                      className="form-control "
+                      id="exampleFormControlSelect1"
+                      ref={form2}
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                    >
+                      <option value="" disabled selected>
+                        City
+                      </option>
+                      <option value="Vasai">Vasai</option>
+                      <option value="Borivali">Borivali</option>
+                      <option value="Thane">Thane</option>
+                      <option value="Bhiwandi">Bhiwandi</option>
+                    </select>
+                  </div>
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">
@@ -243,7 +294,13 @@ function SignUp() {
               <figure>
                 <img src={signpic} alt="registration pic" />
               </figure>
-              <Link to="/login">Already have an account?</Link>
+              <Link
+                to="/login"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                Already have an account?{" "}
+                <span style={{ color: "blue" }}>login</span>
+              </Link>
             </div>
           </div>
         </div>
