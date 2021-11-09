@@ -120,7 +120,31 @@ function CandidateList() {
                       //dispatch({ type: "VOTE", payload: { voted: true } });
                       // console.log(state);
                       setDisable(true);
-
+                      const { uid,  gender, age,location} =user;
+                      const  receiver = candidateName;
+                      console.log(uid);
+                 fetch('http://localhost:4001/transaction/broadcast', {
+                  
+                 method: "post",
+                 
+                  headers: {
+                    "Content-Type": "application/json",
+                    
+                  },
+                  body:JSON.stringify ({
+                  uId:uId,receiver:receiver,city:city,age:age,gender:gender
+                   
+                  }),
+                  
+                })
+                  .then((res) => res.json())
+                  .then((data) => {
+                    console.log(data);
+              
+                    } 
+                      ).catch((err)=>{console.log(err)});
+               
+                  
                       window.setTimeout(() => {
                         history.push("/dashboard");
                       }, 1700);
