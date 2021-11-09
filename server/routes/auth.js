@@ -135,21 +135,20 @@ router.post("/signin", (req, res) => {
   // console.log(txt);
   const uid = CryptoJS.SHA256(txt).toString();
   //console.log(uid);
-
   User.findOne({ uId: uid }).then((savedUser) => {
     if (!savedUser) {
       return res
         .status(422)
         .json({ error: "Invalid *Aadhar No* or *Password*" });
     }
-
+    const voted = false;
     const decryptedPhoneNo = decrypt(savedUser.phoneNo, password);
     const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
-    const { _id, uId, gender, age, city } = savedUser;
+    const { _id, uId, gender, age, city, phoneNo, email } = savedUser;
 
     res.json({
       mobileNo: decryptedPhoneNo,
-      user: { _id, uId, gender, age, city },
+      user: { _id, uId, gender, age, city, phoneNo, email, voted },
       token,
     });
     // res.json({ message: "signed in successfully" });
@@ -281,6 +280,61 @@ router.post("/new-password", (req, res) => {
     .catch((err) => {
       console.log(err);
     });
+});
+
+router.post("/verify-password", requireLogin, (req, res) => {
+  const password = req.body.value;
+  const phoneNo = req.body.phoneNo;
+
+  const decryptedPhoneNo = decrypt(phoneNo, password);
+  if (!decryptedPhoneNo) {
+    return res.status(422).json({ error: "Incorrect Password" });
+  } else {
+    res.json({ phone: decryptedPhoneNo });
+  }
+});
+
+router.post("/send-mail", requireLogin, (req, res) => {
+  const decryptedEmail = decrypt(req.body.email, SECRET_KEY);
+  //console.log(decryptedEmail);
+  //console.log(req.body.uid);
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: EMAIL,
+      pass: EMAIL_PASS,
+    },
+  });
+  var today = new Date();
+  var date =
+    today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
+  var time =
+    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date + " " + time;
+  transporter.sendMail(
+    {
+      from: EMAIL,
+      to: decryptedEmail, // list of receivers
+      subject: "VOTECHAIN [Voted Successfully]", // Subject line
+      html:
+        '<br><h3>You have  successfully voted "' +
+        req.body.candidateName +
+        '" on VoteChain with Unique_ID (uId) :</h3><b>"' +
+        req.body.uid +
+        "</b>" +
+        " on " +
+        dateTime,
+    },
+    (error, response) => {
+      if (error) {
+        console.log(error);
+      } else {
+        //console.log(response);
+      }
+    }
+  );
 });
 
 module.exports = router;

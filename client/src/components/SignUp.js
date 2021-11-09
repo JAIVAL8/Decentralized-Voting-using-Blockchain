@@ -52,25 +52,27 @@ function SignUp() {
         position: "top-center",
       });
       return;
-    } else if (gender !== "Male" && gender !== "Female" && gender !== "Other") {
-      toast.error(
-        "*Gender* should be either Male or Female or Other (case sensitive)",
-        {
-          position: "top-center",
-        }
-      );
-      return;
-    } else if (!(age >= 18 && age <= 110)) {
+    }
+    // else if (gender !== "Male" && gender !== "Female" && gender !== "Other") {
+    //   toast.error(
+    //     "*Gender* should be either Male or Female or Other (case sensitive)",
+    //     {
+    //       position: "top-center",
+    //     }
+    //   );
+    //   return;    }
+    else if (!(age >= 18 && age <= 110)) {
       toast.error("*Age* should be above or equal 18", {
         position: "top-center",
       });
       return;
-    } else if (!/^[a-zA-Z]+$/.test(city)) {
-      toast.error("*City* is incorrect (only text)", {
-        position: "top-center",
-      });
-      return;
-    } else if (
+    }
+    // else if (!/^[a-zA-Z]+$/.test(city)) {
+    //   toast.error("*City* is incorrect (only text)", {
+    //     position: "top-center",
+    //   });
+    //   return;    }
+    else if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(
         password
       )

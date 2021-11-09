@@ -10,6 +10,7 @@ import { reducer, initialState } from "./reducers/userReducer";
 import Reset from "./components/Reset";
 import NewPassword from "./components/NewPassword";
 import CandidateList from "./components/CandidateList";
+import Dashboard from "./components/Dashboard";
 
 export const UserContext = createContext();
 
@@ -42,6 +43,9 @@ const Routing = () => {
       </Route>
       <Route path="/reset-password/:token">
         <NewPassword />
+      </Route>
+      <Route path="/dashboard">
+        <Dashboard />
       </Route>
     </Switch>
   );

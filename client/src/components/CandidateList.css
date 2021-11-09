@@ -44,6 +44,10 @@
   transform: scale(0.95);
 }
 
+#recaptcha-container {
+  margin-bottom: 1rem;
+}
+
 .inner {
   overflow: hidden;
 }

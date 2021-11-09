@@ -10,13 +10,18 @@ function Navbar() {
     if (state) {
       return [
         <li className="nav-item">
+          <Link className="nav-link" to="/dashboard">
+            <button className="btn btn-info">Dashboard</button>
+          </Link>
+        </li>,
+        <li className="nav-item">
           <Link className="nav-link" to="/login">
             <button
-              className="btn btn-dark"
+              className="btn btn-danger"
               onClick={() => {
                 localStorage.clear();
                 dispatch({ type: "CLEAR" });
-                history.push("/login");
+                //history.push("/login");
               }}
             >
               Logout

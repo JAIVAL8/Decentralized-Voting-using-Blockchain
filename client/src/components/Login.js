@@ -159,7 +159,7 @@ function Login() {
           var n1 = number.substr(0, 5);
           var n2 = number.substr(10);
           var n = n1 + "*****" + n2;
-          console.log("++++++++>>>>", number);
+          // console.log("++++++++>>>>", number);
           firebase
             .auth()
             .signInWithPhoneNumber(number, recaptcha)
