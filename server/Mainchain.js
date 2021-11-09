@@ -56,7 +56,7 @@ class Blockchain{
        
         this.addBlock(new Block,true);
 
-        console.log(' Forced-Mining!!!') ;
+        console.log('Forced-Mining!!!') ;
         
 
         this.pendingTransactions=[]; 
@@ -67,7 +67,7 @@ class Blockchain{
         newBLock.timestamp=Date.now();
         if(state==false){
         newBLock.Transactions=this.pendingTransactions.slice(0,this.maxTransperblock);
-    }
+        }
         else{
             newBLock.Transactions=this.pendingTransactions;
         }
