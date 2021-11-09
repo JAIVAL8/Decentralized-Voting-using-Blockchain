@@ -8,7 +8,7 @@ const Blockchain = require('./Mainchain');
 const votechain = new Blockchain();
 const port = process.argv[2];
 const reqPromise = require('request-promise');
-const { request } = require('express');
+
 
 
 
@@ -17,10 +17,20 @@ app.get('/blockchain', function (req, res) {
 });
 
 app.get('/result', function (req, res) {
-    res.send(votechain.Results());
+    uid,receiver=votechain.Results()
+    res.send( uid,receiver);
+});
+app.get('/Forcesave', function (req, res) {
+    votechain.ForceTransactionBlock();
+    res.json(
+        {
+            message: `All Pending Transaction will be added to block Right away.`
+        }
+    );
 });
 app.post('/transaction', function (req, res) {
     const transaction = req.body;
+    
      votechain.PendingTransactions(transaction);
 
     res.json(
@@ -78,12 +88,14 @@ app.post('/transaction/broadcast', function (req, res) {
         req.body.age,
         req.body.gender
         );
-        //console.log(transaction.uid);
-        //console.log(votechain.DoesVoteExist(transaction.uid))
+        console.log(transaction);
+
+        console.log(votechain.DoesVoteExist(transaction.uid))
+        console.log('checking if id exist');
     if(votechain.DoesVoteExist(transaction.uid)){
        //Alert('Vote Already Exist') ;
       
-       console.log('here11');
+      
        res.json(
         {
             message: `vote already exist!`

@@ -1,22 +1,22 @@
 const SHA256=require('crypto-js/sha256');
 const nodeUrl = process.argv[3];  
 class Block{
-    //Block constructor 
-    constructor(timestamp,Transactions,previousHash=''){
-        
-         
-         this.timestamp=timestamp;
-         this.Transactions=Transactions;
-         this.previousHash=previousHash;
-         this.hash=this.calculateHash();
+        //Block constructor 
+        constructor(timestamp,Transactions,previousHash=''){
+            
+            this.timestamp=timestamp;
+            this.Transactions=Transactions;
+            this.previousHash=previousHash;
+            this.hash=this.calculateHash();
+            this.nonce=0;
 
-         this.nonce=0;
+        }
 
-    }
     //hash generation func.
     calculateHash(){
         return SHA256(this.previousHash+this.timestamp+this.nonce+JSON.stringify(this.Transactions)).toString();
     }
+
     //mining difficulty func.
     mineBlock(difficulty){
         while(this.hash.substring(0,difficulty)!== Array(difficulty+1).join('0')){
@@ -26,9 +26,6 @@ class Block{
 
         console.log("Block mined :"+this.hash);
     }
-
-    
-
 
 }
 
@@ -47,25 +44,31 @@ class Blockchain{
     createGensis(){
         return new Block('IT','Jaival Faisal Bautik','0');
     }
+
     //Returns last block
     getLatestblock(){
         return this.chain[this.chain.length-1];
     }
+
     //Forces the  incomplete block
     ForceTransactionBlock(){
        
         this.addBlock(new Block,true);
-
-        console.log(' Forced-Mining!!!') ;
-        
-
+        console.log(' Forced-Mining!!!');
         this.pendingTransactions=[]; 
     }
+
     //New block adding once mining is done
-    addBlock(newBLock){
+    addBlock(newBLock,state){
+        console.log('state:',state);
         newBLock.previousHash=this.getLatestblock().hash;
         newBLock.timestamp=Date.now();
+        if(state==false){
         newBLock.Transactions=this.pendingTransactions.slice(0,this.maxTransperblock);
+    	}
+        else{
+            newBLock.Transactions=this.pendingTransactions;
+        }
         newBLock.mineBlock(this.difficulty);
         this.chain.push(newBLock);
     }
@@ -91,11 +94,9 @@ class Blockchain{
             //console.log(this.pendingTransactions);
             const extra=this.pendingTransactions[this.maxTransperblock];
             //console.log(extra);
-            this.addBlock(new Block);
-
-           console.log('Mining since pending list is full!!!') ;
+            this.addBlock(new Block,false);
+            console.log('Mining since pending list is full!!!') ;
            //console.log("chain:"+JSON.stringify(this.chain,null,4) ) ;
-
            this.pendingTransactions=[]; 
            this.pendingTransactions.push(extra);
            //console.log(this.pendingTransactions);
@@ -104,14 +105,20 @@ class Blockchain{
         
     }
     
-
+    // checkminingstat(hash){
+    //     for(let t=0;t<this.difficulty;t++){
+    //        if(hash!==0){
+    //            return false;
+    //        }
+    //     }
+    // }
     isChainValid(){
         const genesisBlock = this.chain[0];
         if ((genesisBlock.timestamp !== 'IT') ||
             (genesisBlock.nonce !== 0) ||
           (genesisBlock.previousHash !== '0') ||
           (genesisBlock.Transactions !== 'Jaival Faisal Bautik')) {
-            console.log("valid");
+            console.log("invalid");
             return false;
             }
         
@@ -119,8 +126,8 @@ class Blockchain{
             const currentblock=this.chain[i];
             const previousblock=this.chain[i-1];
             
-
-            if(currentblock.hash!==currentblock.calculateHash()){
+           
+            if(currentblock.hash!==currentblock.calculateHash() /*|| checkminingstat(currentblock.hash)*/){
                 return false;
             }
 
@@ -139,11 +146,11 @@ class Blockchain{
    
       console.log(this.pendingTransactions.length==0);
         if(this.getLatestblock().Transactions=='Jaival Faisal Bautik' && this.pendingTransactions.length==0){
-            console.log('here@does1');
+            console.log('condition-1');
             return false;
         }
         else if(this.getLatestblock().Transactions=='Jaival Faisal Bautik' && this.pendingTransactions.length!=0){
-            console.log('here@does2');
+            console.log('condition-2');
             for(let i=0;i< this.pendingTransactions.length;i++){
                 
                 const current= Object.values(this.pendingTransactions[i]);
@@ -177,7 +184,7 @@ class Blockchain{
         //     }
         // }
         else if(this.getLatestblock().Transactions!='Jaival Faisal Bautik'&&this.pendingTransactions.length!=0){
-            console.log('here@does4');
+            console.log('condition-4');
             for(let i=0;i< this.pendingTransactions.length;i++){
                 const current= Object.values(this.pendingTransactions[i]);
                 console.log(current.length);
@@ -206,13 +213,14 @@ class Blockchain{
             
     }
     Results(){
-
+        console.log("hiii")
         for(let i=1;i< this.chain.length;i++){
             const currentblock=this.chain[i].Transactions;
             
             for(let j=0;j< currentblock.length;j++){
-            
-                return(currentblock[j]);
+                uid=uid.currentblock[j];
+            receiver=receiver.currentblock[j];
+                return(uid,receiver);
             }
 
         }

@@ -7,10 +7,10 @@
         "node2": "nodemon --watch src -e js Api.js 4002 http://localhost:4002",
         "node3": "nodemon --watch src -e js Api.js 4003 http://localhost:4003",
         "node4": "nodemon --watch src -e js Api.js 4004 http://localhost:4004",
-        "node5": "nodemon --watch src -e js Api.js 4005 http://localhost:4005"
+        "node5": "nodemon --watch src -e js Api.js 4005 http://localhost:4005",
+        "test": "npm-run-all -p node1 node2 node3 node4 node5"
     },
     "dependencies": {
-        
         "crypto-js": "^4.1.1",
         "express": "^4.17.1",
         "request-promise": "^4.2.6"
