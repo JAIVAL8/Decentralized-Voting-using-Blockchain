@@ -96,13 +96,7 @@ function CandidateList() {
                   e.confirm(value)
                     .then((res) => {
                       //console.log("===>>>", res);
-                      swal(
-                        "🎉✨",
-                        "Voted to " +
-                          candidateName +
-                          " successully. Check your email",
-                        "success"
-                      );
+                      
 
                       fetch("/send-mail", {
                         method: "post",
@@ -140,15 +134,30 @@ function CandidateList() {
                 })
                   .then((res) => res.json())
                   .then((data) => {
+                    if (data.error) {
+                      toast.error(data.error, {
+                        position: "top-center",
+                      });
+                     
+                      return;
+                    }
+                    else{
                     console.log(data);
-              
-                    } 
+                    swal(
+                      "🎉✨",
+                      "Voted to " +
+                        candidateName +
+                        " successully. Check your email",
+                      "success"
+                    );
+                    window.setTimeout(() => {
+                      history.push("/dashboard");
+                    }, 1700);
+                    } }
                       ).catch((err)=>{console.log(err)});
                
                   
-                      window.setTimeout(() => {
-                        history.push("/dashboard");
-                      }, 1700);
+                      
                     })
                     .catch((err) => {
                       toast.error("*OTP* does not match!", {

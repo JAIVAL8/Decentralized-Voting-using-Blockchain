@@ -18,6 +18,7 @@ app.use((req,res, next)=>{
 
 
 
+
 app.get('/blockchain', function (req, res) {
     res.send(votechain);
 });
@@ -102,11 +103,7 @@ app.post('/transaction/broadcast', function (req, res) {
        //Alert('Vote Already Exist') ;
       
       
-       res.json(
-        {
-            message: `vote already exist!`
-        }
-        );
+       return res.status(422).json({ error: "Vote already Exist with this uid" });
     }
     else{
         votechain.PendingTransactions(transaction );

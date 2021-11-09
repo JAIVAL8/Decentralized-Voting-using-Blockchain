@@ -287,6 +287,7 @@ router.post("/verify-password", requireLogin, (req, res) => {
   const phoneNo = req.body.phoneNo;
 
   const decryptedPhoneNo = decrypt(phoneNo, password);
+  console.log(decryptedPhoneNo);
   if (!decryptedPhoneNo) {
     return res.status(422).json({ error: "Incorrect Password" });
   } else {
