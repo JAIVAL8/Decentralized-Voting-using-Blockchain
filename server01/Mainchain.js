@@ -220,15 +220,16 @@ class Blockchain {
   }
   Results() {
     console.log("hiii");
+    let Votedlist=[];
     for (let i = 1; i < this.chain.length; i++) {
       const currentblock = this.chain[i].Transactions;
 
       for (let j = 0; j < currentblock.length; j++) {
-        uid = uid.currentblock[j];
-        receiver = receiver.currentblock[j];
-        return uid, receiver;
+        Votedlist.push(currentblock[j]);
+        
       }
     }
+    return Votedlist;
   }
 }
 

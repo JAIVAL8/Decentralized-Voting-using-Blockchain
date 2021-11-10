@@ -21,8 +21,8 @@ app.get("/blockchain", function (req, res) {
 });
 
 app.get("/result", function (req, res) {
-  uid, (receiver = votechain.Results());
-  res.send(uid, receiver);
+ 
+  res.send( votechain.Results());
 });
 app.get("/Forcesave", function (req, res) {
   votechain.ForceTransactionBlock();
