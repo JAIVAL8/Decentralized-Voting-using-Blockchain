@@ -16,7 +16,7 @@ function CandidateList() {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     var uId = user.uId;
-    
+
     fetch("http://localhost:4001/checkuid", {
       method: "post",
 
@@ -140,7 +140,7 @@ function CandidateList() {
                       const { uId, city, gender, age } = user;
 
                       const receiver = candidateName;
-                      console.log(uId);
+                      // console.log(uId);
                       fetch("http://localhost:4001/transaction/broadcast", {
                         method: "post",
 
@@ -164,7 +164,7 @@ function CandidateList() {
 
                             return;
                           } else {
-                            console.log(data);
+                            // console.log(data);
                             swal(
                               "🎉✨",
                               "Voted to " +
@@ -216,7 +216,7 @@ function CandidateList() {
     <>
       <section id="facilities">
         <div className="title">
-          <h1> Candidate 's List</h1>
+          <h1> Candidate's List</h1>
         </div>
         <div className="containers">
           <div id="recaptcha-container"></div>
@@ -237,9 +237,7 @@ function CandidateList() {
                 }}
               >
                 <div className="inner">
-                  <img className="card-img-top" src={Congress} alt="Card">
-                    
-                  </img>
+                  <img className="card-img-top" src={Congress} alt="Card"></img>
                 </div>
                 <div className="card-body text-center">
                   <h5 className="card-title"> CONGRESS </h5>
@@ -266,9 +264,7 @@ function CandidateList() {
                 }}
               >
                 <div className="inner">
-                  <img className="card-img-top" src={AAP} alt="Card">
-                    
-                  </img>
+                  <img className="card-img-top" src={AAP} alt="Card"></img>
                 </div>
                 <div className="card-body text-center">
                   <h5 className="card-title"> AAP </h5>
@@ -355,9 +351,7 @@ function CandidateList() {
                 }}
               >
                 <div className="inner">
-                  <img className="card-img-top" src={Nota} alt="Card">
-                
-                  </img>
+                  <img className="card-img-top" src={Nota} alt="Card"></img>
                 </div>
                 <div className="card-body text-center">
                   <h5 className="card-title"> NOTA </h5>

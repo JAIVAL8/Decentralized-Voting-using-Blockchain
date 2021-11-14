@@ -21,9 +21,9 @@ app.get("/blockchain", function (req, res) {
 });
 
 app.get("/result", function (req, res) {
- 
-  res.send( votechain.Results());
+  res.send(votechain.Results());
 });
+
 app.get("/Forcesave", function (req, res) {
   votechain.ForceTransactionBlock();
   res.json({
@@ -31,12 +31,11 @@ app.get("/Forcesave", function (req, res) {
   });
 });
 app.post("/checkuid", function (req, res) {
-    
-    if (votechain.DoesVoteExist(req.body.uid)) {
-        //Alert('Vote Already Exist') ;
-        return res.status(422).json({ error: "Already Voted for this Election" });
-      }
-  });
+  if (votechain.DoesVoteExist(req.body.uid)) {
+    //Alert('Vote Already Exist') ;
+    return res.status(422).json({ error: "Already Voted for this Election" });
+  }
+});
 app.post("/transaction", function (req, res) {
   const transaction = req.body;
 

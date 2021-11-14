@@ -219,24 +219,20 @@ class Blockchain {
     }
   }
   Results() {
-    console.log("hiii");
-    let Votedlist=[];
+    //console.log("hiii");
+    let Votedlist = [];
     for (let i = 1; i < this.chain.length; i++) {
       const currentblock = this.chain[i].Transactions;
 
       for (let j = 0; j < currentblock.length; j++) {
         Votedlist.push(currentblock[j]);
-        
       }
     }
     return Votedlist;
   }
 }
 
-
 module.exports = Blockchain;
-
-
 
 // let x= new Blockchain();
 
