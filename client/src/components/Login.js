@@ -154,8 +154,8 @@ function Login() {
           // const recaptcha = new firebase.auth.RecaptchaVerifier(
           //   "recaptcha-container"
           // );
-          //const number = "+91" + data.mobileNo;
-          const number = "+911234567890";
+          const number = "+91" + data.mobileNo;
+          // const number = "+911234567890";
           var n1 = number.substr(0, 5);
           var n2 = number.substr(10);
           var n = n1 + "*****" + n2;

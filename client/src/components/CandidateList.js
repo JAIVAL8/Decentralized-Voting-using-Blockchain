@@ -60,6 +60,7 @@ function CandidateList() {
         return;
       }
       //console.log(state);
+      
 
       fetch("/verify-password", {
         method: "post",
@@ -84,14 +85,15 @@ function CandidateList() {
             // toast.success(data.phone, {
             //   position: "top-center",
             // });
-            firebase.auth().settings.appVerificationDisabledForTesting = true;
+             firebase.auth().settings.appVerificationDisabledForTesting = true;
 
             const recaptcha = new firebase.auth.RecaptchaVerifier(
               "recaptcha-container"
             );
             // console.log(recaptcha, "<<------");
-            //const number = "+91" + data.phone;
-            const number = "+911234567890";
+            // const number = "+91" + data.phone;
+            // console.log(number);
+             const number = "+911234567890";
             var n1 = number.substr(0, 5);
             var n2 = number.substr(10);
             var n = n1 + "*****" + n2;
@@ -117,6 +119,7 @@ function CandidateList() {
                     }, 2000);
                     return;
                   }
+                  
                   e.confirm(value)
                     .then((res) => {
                       //console.log("===>>>", res);
@@ -217,9 +220,9 @@ function CandidateList() {
       <section id="facilities">
         <div className="title">
           <h1> Candidate 's List</h1>
-        </div>
+        </div> <div id="recaptcha-container"></div>
         <div className="containers">
-          <div id="recaptcha-container"></div>
+         
           <div
             className="row gy-3"
             style={{
