@@ -9,7 +9,7 @@ class Block{
             this.previousHash=previousHash;
             this.hash=this.calculateHash();
             this.nonce=0;
-
+            this.miner=0;
         }
 
     //hash generation func.
@@ -36,6 +36,7 @@ class Blockchain{
         this.difficulty;     //Setting the difficulty
         this.nodeUrl = nodeUrl;         
         this.networkNodes = [];
+        this.reward=0;
         this.maxTransperblock;//setting max amount of transaction per block
     }  
     

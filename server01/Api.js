@@ -28,11 +28,34 @@ app.get('/Forcesave', function (req, res) {
         }
     );
 });
+app.post('/broadcast-forcemine', function (req,res) {
+  votechain.ForceTransactionBlock();
+  const requests = [];
+  votechain.networkNodes.forEach(networkNode => {
+      const requestOptions = {
+          uri: networkNode + '/Forcesave',
+          method: 'GET',
+          json: true
+      };
+
+      requests.push(reqPromise(requestOptions));
+  });
+
+  Promise.all(requests)
+      .then(data =>  {
+          res.json(
+              {
+                  message: `Forced-Mining!`
+              }
+          );
+      });
+});
+
 app.post('/transaction', function (req, res) {
     const transaction = req.body;
     
      votechain.PendingTransactions(transaction);
-
+   
     res.json(
         {
             message: `Transaction will be added to block.`
@@ -56,6 +79,12 @@ app.post('/SetdifficultyandMininglimits', function (req, res) {
 app.post('/broadcast-node-mininglimit', function (req, res) {
     const diff = parseInt(req.body.diff);
     const max = parseInt(req.body.max);
+    const auto = parseInt(req.body.auto);
+    if(auto==1){
+         diff=2;
+         max=5;
+    }
+
     votechain.difficulty=diff;
     votechain.maxTransperblock=max;
     const requests = [];
@@ -79,6 +108,7 @@ app.post('/broadcast-node-mininglimit', function (req, res) {
             );
         });
 });
+
 
 app.post('/transaction/broadcast', function (req, res) {
     
