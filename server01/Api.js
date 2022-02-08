@@ -79,11 +79,8 @@ app.post('/SetdifficultyandMininglimits', function (req, res) {
 app.post('/broadcast-node-mininglimit', function (req, res) {
     const diff = parseInt(req.body.diff);
     const max = parseInt(req.body.max);
-    const auto = parseInt(req.body.auto);
-    if(auto==1){
-         diff=2;
-         max=5;
-    }
+  
+    
 
     votechain.difficulty=diff;
     votechain.maxTransperblock=max;
