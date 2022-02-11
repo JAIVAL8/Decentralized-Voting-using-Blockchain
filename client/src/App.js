@@ -11,6 +11,7 @@ import Reset from "./components/Reset";
 import NewPassword from "./components/NewPassword";
 import CandidateList from "./components/CandidateList";
 import Dashboard from "./components/Dashboard";
+import { Admin } from "./components/Admin";
 
 export const UserContext = createContext();
 
@@ -46,6 +47,9 @@ const Routing = () => {
       </Route>
       <Route path="/dashboard">
         <Dashboard />
+      </Route>
+      <Route path="/admin">
+        <Admin />
       </Route>
     </Switch>
   );

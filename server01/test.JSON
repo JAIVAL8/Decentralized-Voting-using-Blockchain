@@ -1,0 +1,39 @@
+[{
+    "uid":"16",
+      "receiver":"xpy",
+     "location":"Bhiwandi",
+      "age":21,
+       "gender":"Male"
+    
+},
+{
+    "uid":"161",
+      "receiver":"xpy",
+     "location":"Thane",
+      "age":24,
+       "gender":"Female"
+    
+},
+{
+    "uid":"162",
+      "receiver":"xpy",
+     "location":"Vasai",
+      "age":36,
+       "gender":"Others"
+    
+},
+{
+    "uid":"163",
+      "receiver":"xpy",
+     "location":"Borivali",
+      "age":29,
+       "gender":"Female"
+    
+},{
+    "uid":"164",
+      "receiver":"xpy",
+     "location":"Bhiwandi",
+      "age":18,
+       "gender":"Male"
+    
+}]

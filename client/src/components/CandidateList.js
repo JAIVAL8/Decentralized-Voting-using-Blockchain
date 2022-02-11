@@ -15,7 +15,7 @@ function CandidateList() {
   const [disable, setDisable] = useState(false);
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    var uId = user.uId;
+    const uId = user.uId;
 
     fetch("http://localhost:4001/checkuid", {
       method: "post",
@@ -90,7 +90,8 @@ function CandidateList() {
               "recaptcha-container"
             );
             // console.log(recaptcha, "<<------");
-            //const number = "+91" + data.phone;
+            // const number = "+91" + data.phone;
+            // console.log(number);
             const number = "+911234567890";
             var n1 = number.substr(0, 5);
             var n2 = number.substr(10);
@@ -117,6 +118,7 @@ function CandidateList() {
                     }, 2000);
                     return;
                   }
+
                   e.confirm(value)
                     .then((res) => {
                       //console.log("===>>>", res);
@@ -218,8 +220,8 @@ function CandidateList() {
         <div className="title">
           <h1> Candidate's List</h1>
         </div>
+        <div id="recaptcha-container"></div>
         <div className="containers">
-          <div id="recaptcha-container"></div>
           <div
             className="row gy-3"
             style={{

@@ -129,7 +129,7 @@ router.post("/signup", (req, res) => {
 
 router.post("/signin", (req, res) => {
   const { aadharNo, password } = req.body;
-
+  //console.log(aadharNo);
   const hashedAadhar = CryptoJS.SHA256(aadharNo).toString();
   const txt = hashedAadhar + password;
   // console.log(txt);
@@ -144,11 +144,11 @@ router.post("/signin", (req, res) => {
     const voted = false;
     const decryptedPhoneNo = decrypt(savedUser.phoneNo, password);
     const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
-    const { _id, uId, gender, age, city, phoneNo, email } = savedUser;
+    const { _id, uId, gender, age, city, phoneNo, email, isAdmin } = savedUser;
 
     res.json({
       mobileNo: decryptedPhoneNo,
-      user: { _id, uId, gender, age, city, phoneNo, email, voted },
+      user: { _id, uId, gender, age, city, phoneNo, email, voted, isAdmin },
       token,
     });
     // res.json({ message: "signed in successfully" });
@@ -285,9 +285,9 @@ router.post("/new-password", (req, res) => {
 router.post("/verify-password", requireLogin, (req, res) => {
   const password = req.body.value;
   const phoneNo = req.body.phoneNo;
-   
-   const decryptedPhoneNo = decrypt(phoneNo, password);
-  
+
+  const decryptedPhoneNo = decrypt(phoneNo, password);
+
   if (!decryptedPhoneNo) {
     return res.status(422).json({ error: "Incorrect Password" });
   } else {
