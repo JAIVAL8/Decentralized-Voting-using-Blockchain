@@ -58,6 +58,8 @@ app.post("/SetdifficultyandMininglimits", function (req, res) {
 });
 
 app.post("/broadcast-node-mininglimit", function (req, res) {
+  console.log(req.body.diff);
+  console.log(req.body.max);
   const diff = parseInt(req.body.diff);
   const max = parseInt(req.body.max);
   votechain.difficulty = diff;
