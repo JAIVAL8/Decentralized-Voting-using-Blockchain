@@ -680,6 +680,20 @@ label.valid:after {
   .container {
     max-width: 1200px;
   }
+  .pie-chart {
+    width: 50%;
+  }
+}
+
+@media screen and (min-width: 425px) and (max-width: 768px) {
+  .pie-chart {
+    width: 60%;
+  }
+}
+@media screen and (min-width: 325px) and (max-width: 425px) {
+  .pie-chart {
+    width: 80%;
+  }
 }
 
 @media screen and (max-width: 768px) {

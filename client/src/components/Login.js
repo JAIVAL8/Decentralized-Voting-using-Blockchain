@@ -154,8 +154,8 @@ function Login() {
           // const recaptcha = new firebase.auth.RecaptchaVerifier(
           //   "recaptcha-container"
           // );
-          const number = "+91" + data.mobileNo;
-          // const number = "+911234567890";
+          //const number = "+91" + data.mobileNo;
+          const number = "+911234567890";
           var n1 = number.substr(0, 5);
           var n2 = number.substr(10);
           var n = n1 + "*****" + n2;
@@ -267,6 +267,7 @@ function Login() {
                     <i className="zmdi zmdi-account  material-icons-name"></i>
                   </label>
                   <input
+                    id="aadharNo"
                     type="number"
                     value={aadharNo}
                     onChange={(e) => setAadharNo(e.target.value)}
@@ -279,6 +280,7 @@ function Login() {
                     <i className="zmdi zmdi-lock material-icons-name"></i>
                   </label>
                   <input
+                    id="password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

@@ -146,6 +146,7 @@ function SignUp() {
                     <i className="zmdi zmdi-account material-icons-name"></i>
                   </label>
                   <input
+                    id="aadharNo"
                     type="number"
                     value={aadharNo}
                     onChange={(e) => setAadharNo(e.target.value)}
@@ -158,6 +159,7 @@ function SignUp() {
                     <i className="zmdi zmdi-email  material-icons-name"></i>
                   </label>
                   <input
+                    id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -171,6 +173,7 @@ function SignUp() {
                   </label>
                   <input
                     type="number"
+                    id="phone"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     autoComplete="off"
@@ -178,7 +181,7 @@ function SignUp() {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="gender">
+                  <label htmlFor="exampleFormControlSelect1">
                     <i className="zmdi zmdi-male-female material-icons-name"></i>
                   </label>
                   {/* <input
@@ -214,6 +217,7 @@ function SignUp() {
                     <i className="zmdi zmdi-walk material-icons-name"></i>
                   </label>
                   <input
+                    id="age"
                     type="number"
                     value={age}
                     onChange={(e) => setAge(e.target.value)}
@@ -222,7 +226,7 @@ function SignUp() {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="location">
+                  <label htmlFor="exampleFormControlSelect1">
                     <i className="zmdi zmdi-pin material-icons-name"></i>
                   </label>
                   {/* <input
@@ -258,6 +262,7 @@ function SignUp() {
                     <i className="zmdi zmdi-lock material-icons-name"></i>
                   </label>
                   <input
+                    id="password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -270,6 +275,7 @@ function SignUp() {
                     <i className="zmdi zmdi-lock material-icons-name"></i>
                   </label>
                   <input
+                    id="cpassword"
                     type="password"
                     value={confirmpass}
                     onChange={(e) => setConfirmPass(e.target.value)}
