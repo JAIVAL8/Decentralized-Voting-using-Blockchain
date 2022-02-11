@@ -29,7 +29,6 @@ app.get('/mine', function (req, res) {
     res.send(newBlock);
 });
 
-<<<<<<< HEAD
 
 app.get('/blockchain', function (req, res) {
     res.send(votechain);
@@ -37,35 +36,14 @@ app.get('/blockchain', function (req, res) {
 
 app.get('/result', function (req, res) {
     res.send(votechain.Results());
-=======
-app.get("/result", function (req, res) {
-  res.send(votechain.Results());
-});
-
-app.get("/Forcesave", function (req, res) {
-  votechain.ForceTransactionBlock();
-  res.json({
-    message: `All Pending Transaction will be added to block Right away.`,
-  });
->>>>>>> a663a4ccfa5317e2c51b4372cdd107389bac65ae
 });
 
 app.post("/checkuid", function (req, res) {
-<<<<<<< HEAD
     if (votechain.DoesVoteExist(req.body.uid)) {
       //Alert('Vote Already Exist') ;
       return res.status(422).json({ error: "Already Voted for this Election" });
     }
   });
-=======
-  if (votechain.DoesVoteExist(req.body.uid)) {
-    //Alert('Vote Already Exist') ;
-    return res.status(422).json({ error: "Already Voted for this Election" });
-  }
-});
-app.post("/transaction", function (req, res) {
-  const transaction = req.body;
->>>>>>> a663a4ccfa5317e2c51b4372cdd107389bac65ae
 
 
 app.get('/Forcemine', function (req, res) {
@@ -99,27 +77,6 @@ app.get('/broadcast/Forcemine', function (req,res) {
       });
 });
 
-<<<<<<< HEAD
-=======
-app.post("/broadcast-node-mininglimit", function (req, res) {
-  console.log(req.body.diff);
-  console.log(req.body.max);
-  const diff = parseInt(req.body.diff);
-  const max = parseInt(req.body.max);
-  votechain.difficulty = diff;
-  votechain.maxTransperblock = max;
-  const requests = [];
-  votechain.networkNodes.forEach((networkNode) => {
-    const requestOptions = {
-      uri: networkNode + "/SetdifficultyandMininglimits",
-      method: "POST",
-      body: { diff: diff, max: max },
-      json: true,
-    };
-
-    requests.push(reqPromise(requestOptions));
-  });
->>>>>>> a663a4ccfa5317e2c51b4372cdd107389bac65ae
 
 
 app.post('/Set-Parameters', function (req, res) {
