@@ -8,6 +8,14 @@ import { ToastContainer, toast } from "react-toastify";
 import firebase from "../firebase";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import { SECRET_KEY } from "./keys";
+const CryptoJS = require("crypto-js");
+
+function decrypt(ciphertext, secret) {
+  let bytes = CryptoJS.AES.decrypt(ciphertext, secret);
+  let originalText = bytes.toString(CryptoJS.enc.Utf8);
+  return originalText;
+}
 
 function CandidateList() {
   const { state, dispatch } = useContext(UserContext);
@@ -140,7 +148,9 @@ function CandidateList() {
                       // console.log(state);
 
                       const { uId, city, gender, age } = user;
-
+                      const decryptedCity = decrypt(city, SECRET_KEY);
+                      const decryptedGender = decrypt(gender, SECRET_KEY);
+                      const decryptedAge = decrypt(age, SECRET_KEY);
                       const receiver = candidateName;
                       // console.log(uId);
                       fetch("http://localhost:4001/broadcast/Pending-votes", {
@@ -152,9 +162,9 @@ function CandidateList() {
                         body: JSON.stringify({
                           uid: uId,
                           receiver: candidateName,
-                          location: city,
-                          age: age,
-                          gender: gender,
+                          location: decryptedCity,
+                          age: decryptedAge,
+                          gender: decryptedGender,
                         }),
                       })
                         .then((res) => res.json())
