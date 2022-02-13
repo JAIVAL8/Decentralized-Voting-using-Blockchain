@@ -8,7 +8,7 @@ class Block {
     this.previousHash = previousHash;
     this.hash;
     this.nonce = 0;
-    this.miner = "<----------------Creator------------------->";
+    this.miner = "<----------------Creator------------------>";
   }
 }
 
@@ -86,7 +86,7 @@ class Blockchain {
 
     // newBLock.mineBlock(this.difficulty);
 
-    // console.log("Block  :"+JSON.stringify(newBLock));
+  console.log("Block  :"+JSON.stringify(newBLock));
     return newBLock;
 
     // this.mineBlock(this.difficulty,newBLock)

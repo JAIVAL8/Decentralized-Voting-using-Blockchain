@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 
 app.get("/mine", function (req, res) {
   let newBlock = votechain.createBlock(false);
-  console.log(JSON.stringify(newBlock));
+//   console.log(JSON.stringify(newBlock));
   newBlock = votechain.mineBlock(newBlock);
   res.send(newBlock);
 });
@@ -168,9 +168,9 @@ app.post("/broadcast/Pending-votes", function (req, res) {
     } else {
       console.log("Mining since pending list is full!!!");
       votechain.pendingTransactions.push(transaction);
-
+      console.log(votechain.pendingTransactions);
       const extra = votechain.pendingTransactions[votechain.maxvotes];
-
+      
       const start = Date.now();
       const requests = [];
       Nodes = [];
@@ -183,15 +183,20 @@ app.post("/broadcast/Pending-votes", function (req, res) {
           method: "GET",
           json: true,
         };
-
-        requests.push(reqPromise(requestOptions));
+       requests.push(reqPromise(requestOptions));
       });
 
-      Promise.any(requests).then((newBlock) => {
+      Promise.any(requests)
+      .then((newBlock) => {
         res.json({
-          message: `Mining Success!`,
+          message: `Mining Success!`
         });
         votechain.addBlock(newBlock);
+        console.log(newBlock);
+        console.log(extra);
+        votechain.pendingTransactions = [];
+        votechain.pendingTransactions.push(extra);
+        console.log("Mining since pending list is full!!!");
         const requests = [];
         votechain.networkNodes.forEach((networkNode) => {
           const requestOptions = {
@@ -211,8 +216,7 @@ app.post("/broadcast/Pending-votes", function (req, res) {
         });
       });
 
-      votechain.pendingTransactions = [];
-      votechain.pendingTransactions.push(extra);
+      
       const stop = Date.now();
       console.log(`Time Taken to execute = ${(stop - start) / 1000} seconds`);
     }
