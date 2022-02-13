@@ -17,79 +17,84 @@ function Dashboard() {
   const [eg, setEGrp] = useState(0);
 
   useEffect(() => {
-    const fetchPrices = async () => {
-      const res = await fetch("http://localhost:4001/result");
-      const result = await res.json();
-      //console.log(result);
-      var m = 0,
-        f = 0,
-        o = 0,
-        bh = 0,
-        th = 0,
-        bo = 0,
-        va = 0,
-        agrp = 0,
-        bgrp = 0,
-        cgrp = 0,
-        dgrp = 0,
-        egrp = 0;
-      for (let i = 0; i < result.length; i++) {
-        if (result[i].gender === "Female") {
-          f++;
-        } else if (result[i].gender === "Male") {
-          m++;
-        } else if (result[i].gender === "Others") {
-          o++;
-        }
+    const fetchDetails = () => {
+      fetch("http://localhost:4001/result")
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          var m = 0,
+            f = 0,
+            o = 0,
+            bh = 0,
+            th = 0,
+            bo = 0,
+            va = 0,
+            agrp = 0,
+            bgrp = 0,
+            cgrp = 0,
+            dgrp = 0,
+            egrp = 0;
+          for (let i = 0; i < result.length; i++) {
+            if (result[i].gender === "Female") {
+              f++;
+            } else if (result[i].gender === "Male") {
+              m++;
+            } else if (result[i].gender === "Others") {
+              o++;
+            }
 
-        if (result[i].location === "Bhiwandi") {
-          bh++;
-        } else if (result[i].location === "Thane") {
-          th++;
-        } else if (result[i].location === "Vasai") {
-          va++;
-        } else if (result[i].location === "Borivali") {
-          bo++;
-        }
+            if (result[i].location === "Bhiwandi") {
+              bh++;
+            } else if (result[i].location === "Thane") {
+              th++;
+            } else if (result[i].location === "Vasai") {
+              va++;
+            } else if (result[i].location === "Borivali") {
+              bo++;
+            }
 
-        if (parseInt(result[i].age) >= 18 && parseInt(result[i].age) <= 30) {
-          agrp++;
-        } else if (
-          parseInt(result[i].age) >= 31 &&
-          parseInt(result[i].age) <= 45
-        ) {
-          bgrp++;
-        } else if (
-          parseInt(result[i].age) >= 46 &&
-          parseInt(result[i].age) <= 60
-        ) {
-          cgrp++;
-        } else if (
-          parseInt(result[i].age) >= 61 &&
-          parseInt(result[i].age) <= 75
-        ) {
-          dgrp++;
-        } else if (
-          parseInt(result[i].age) >= 76 &&
-          parseInt(result[i].age) <= 90
-        ) {
-          egrp++;
-        }
-      }
-      setMale(m);
-      setFemale(f);
-      setOthers(o);
-      setThane(th);
-      setVasai(va);
-      setBorivali(bo);
-      setBhiwandi(bh);
-      setAGrp(agrp);
-      setBGrp(bgrp);
-      setCGrp(cgrp);
-      setDGrp(dgrp);
-      setEGrp(egrp);
+            if (
+              parseInt(result[i].age) >= 18 &&
+              parseInt(result[i].age) <= 30
+            ) {
+              agrp++;
+            } else if (
+              parseInt(result[i].age) >= 31 &&
+              parseInt(result[i].age) <= 45
+            ) {
+              bgrp++;
+            } else if (
+              parseInt(result[i].age) >= 46 &&
+              parseInt(result[i].age) <= 60
+            ) {
+              cgrp++;
+            } else if (
+              parseInt(result[i].age) >= 61 &&
+              parseInt(result[i].age) <= 75
+            ) {
+              dgrp++;
+            } else if (
+              parseInt(result[i].age) >= 76 &&
+              parseInt(result[i].age) <= 90
+            ) {
+              egrp++;
+            }
+          }
+          setMale(m);
+          setFemale(f);
+          setOthers(o);
+          setThane(th);
+          setVasai(va);
+          setBorivali(bo);
+          setBhiwandi(bh);
+          setAGrp(agrp);
+          setBGrp(bgrp);
+          setCGrp(cgrp);
+          setDGrp(dgrp);
+          setEGrp(egrp);
+        });
     };
-    fetchPrices();
+    fetchDetails();
   }, []);
 
   const options = {

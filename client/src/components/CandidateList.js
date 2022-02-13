@@ -143,7 +143,7 @@ function CandidateList() {
 
                       const receiver = candidateName;
                       // console.log(uId);
-                      fetch("http://localhost:4001/transaction/broadcast", {
+                      fetch("http://localhost:4001/broadcast/Pending-votes", {
                         method: "post",
 
                         headers: {
