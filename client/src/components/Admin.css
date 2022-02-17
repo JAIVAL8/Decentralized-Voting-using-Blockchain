@@ -1,15 +1,17 @@
-.input-fild {
-  width: 50%;
-  margin: 10px auto;
-  border: 1px solid black;
+.container-adm {
+  width: 70%;
+  margin: 15px auto;
+  padding: 25px;
+  border: 2px solid black;
+  border-radius: 15px;
+  box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+  text-align: center;
 }
 
-#max {
-  border: 1px solid yellow;
-  margin: 20px auto;
+.form-adm {
+  margin: 18px auto;
 }
 
-#diff {
-  border: 1px solid red;
-  margin: 20px auto;
+.span-adm {
+  font-weight: bold;
 }

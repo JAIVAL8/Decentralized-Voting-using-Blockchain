@@ -25,25 +25,42 @@ function CandidateList() {
     const user = JSON.parse(localStorage.getItem("user"));
     const uId = user.uId;
 
-    fetch("http://localhost:4001/checkuid", {
-      method: "post",
+    // fetch("http://localhost:4001/checkuid", {
+    //   method: "post",
 
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        uid: uId,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          toast.error(data.error, {
-            position: "top-center",
-          });
-          setDisable(true);
-        }
-      });
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     uid: uId,
+    //   }),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     if (data.error) {
+    //       toast.error(data.error, {
+    //         position: "top-center",
+    //       });
+    //       setDisable(true);
+    //     }
+    //   });
+
+    // fetch("/btn-flag", {
+    //   method: "post",
+
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     uid: uId,
+    //   }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     toast.success(data.btnFlag, {
+    //       position: "top-center",
+    //     });
+    //   });
   }, []);
 
   const postData = (candidateName) => {
@@ -92,15 +109,18 @@ function CandidateList() {
             // toast.success(data.phone, {
             //   position: "top-center",
             // });
-            firebase.auth().settings.appVerificationDisabledForTesting = true;
+            //firebase.auth().settings.appVerificationDisabledForTesting = true;
 
             const recaptcha = new firebase.auth.RecaptchaVerifier(
-              "recaptcha-container"
+              "recaptcha-container",
+              {
+                size: "invisible",
+              }
             );
             // console.log(recaptcha, "<<------");
-            // const number = "+91" + data.phone;
-            // console.log(number);
-            const number = "+911234567890";
+            const number = "+91" + data.phone;
+            //console.log(number);
+            //const number = "+911234567890";
             var n1 = number.substr(0, 5);
             var n2 = number.substr(10);
             var n = n1 + "*****" + n2;
@@ -209,9 +229,9 @@ function CandidateList() {
                   position: "top-center",
                 });
                 console.log(err);
-                window.setTimeout(() => {
-                  history.go(0);
-                }, 2000);
+                // window.setTimeout(() => {
+                //   history.go(0);
+                // }, 2000);
                 return;
               });
           }

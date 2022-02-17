@@ -8,16 +8,15 @@ export const Admin = () => {
   const history = useHistory();
   const [difficulty, setDifficulty] = useState();
   const [max, setMax] = useState();
-  const [node, setNode] = useState(5);
+  const [node, setNode] = useState();
   const [nodeVal, setNodeVal] = useState();
   useLayoutEffect(() => {
     if (JSON.parse(localStorage.getItem("user")).isAdmin === false) {
       history.push("/");
     }
   }, []);
-  const startVote = () => {
-    console.log("hiii");
-  };
+
+  const startVote = () => {};
   const endVote = () => {
     fetch("http://localhost:4001/broadcast/Forcemine")
       .then((response) => response.json())
@@ -103,9 +102,9 @@ export const Admin = () => {
 
   return (
     <>
-      <div className="input-fild">
-        <div className="form-group">
-          <span>No. of Nodes in Network</span>
+      <div className="container-adm">
+        <div className="form-group form-adm">
+          <span className="span-adm">No. of Nodes in Network</span>
 
           <input
             id="node"
@@ -113,24 +112,24 @@ export const Admin = () => {
             value={node}
             onChange={(e) => setNode(e.target.value)}
             autoComplete="off"
+            placeholder="3"
+            style={{ width: "40%", margin: "0 auto", textAlign: "center" }}
           />
         </div>
         <button
-          style={{ margin: "10px auto", alignItems: "center" }}
-          class="btn btn-primary btn-lg"
+          style={{ margin: "3px auto", alignItems: "center" }}
+          class="btn btn-outline-primary btn-md"
           onClick={() => postNode()}
         >
           Register Nodes
         </button>
-        <div>
-          <span>The Difficulty of Mining</span>
+        <div className="form-group form-adm">
+          <span className="span-adm">The Difficulty of Mining</span>
           <p>
             Note: The difficulty should be lower {`(<=4)`} for low processing
             machines
           </p>
-        </div>
 
-        <div className="form-group">
           <input
             id="diff"
             type="number"
@@ -138,10 +137,11 @@ export const Admin = () => {
             onChange={(e) => setDifficulty(e.target.value)}
             autoComplete="off"
             placeholder="1"
+            style={{ width: "40%", margin: "0 auto", textAlign: "center" }}
           />
-        </div>
-        <div className="form-group">
-          <span>The No. of Votes per Block</span>
+          <div style={{ marginTop: "13px" }}>
+            <span className="span-adm">The No. of Votes per Block</span>
+          </div>
 
           <input
             id="max"
@@ -150,17 +150,18 @@ export const Admin = () => {
             onChange={(e) => setMax(e.target.value)}
             autoComplete="off"
             placeholder="10"
+            style={{ width: "40%", margin: "0 auto", textAlign: "center" }}
           />
         </div>
         <button
-          style={{ margin: "10px auto", alignItems: "center" }}
-          class="btn btn-primary btn-lg"
+          style={{ margin: "3px auto", alignItems: "center" }}
+          class="btn btn-outline-primary btn-md"
           onClick={() => postData()}
         >
           Set Mining Limit
         </button>
-        <div className="form-group">
-          <span>Run Consensus in case a Node fails</span>
+        <div className="form-group form-adm">
+          <span className="span-adm">Run Consensus in case a Node fails</span>
           <p>
             Note: The values should be within the range of registered nodes.
           </p>
@@ -172,29 +173,40 @@ export const Admin = () => {
             onChange={(e) => setNodeVal(e.target.value)}
             autoComplete="off"
             placeholder="4001"
+            style={{ width: "50%", margin: "0 auto", textAlign: "center" }}
           />
         </div>
         <button
-          style={{ margin: "10px auto", alignItems: "center" }}
-          class="btn btn-primary btn-lg"
+          style={{ margin: "3px auto", alignItems: "center" }}
+          class="btn btn-outline-primary btn-md"
           onClick={() => runConsensus()}
         >
           Run Consensus
         </button>
         <div>
           <button
-            style={{ margin: "10px auto", alignItems: "center" }}
-            class="btn btn-primary btn-lg"
+            style={{
+              marginTop: "15px",
+              alignItems: "center",
+            }}
+            class="btn btn-outline-success btn-md"
+            id="btn1"
+            onClick={() => startVote()}
+            // disabled={BTN}
+          >
+            Start Voting
+          </button>
+          <button
+            style={{
+              marginTop: "15px",
+              marginLeft: "15px",
+              alignItems: "center",
+            }}
+            class="btn btn-outline-secondary btn-md"
+            id="btn1"
             onClick={() => endVote()}
           >
             End Voting
-          </button>
-          <button
-            style={{ margin: "10px auto", alignItems: "center" }}
-            class="btn btn-primary btn-lg"
-            onClick={() => startVote()}
-          >
-            Start Voting
           </button>
         </div>
       </div>

@@ -7,11 +7,11 @@ export const reducer = (state, action) => {
   if (action.type === "CLEAR") {
     return null;
   }
-  // if (action.type === "VOTE") {
-  //   return {
-  //     ...state,
-  //     voted: action.payload.voted,
-  //   };
-  // }
+  if (action.type === "VOTE") {
+    return {
+      ...state,
+      voted: action.payload.voted,
+    };
+  }
   return state;
 };
