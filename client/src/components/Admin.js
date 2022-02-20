@@ -10,13 +10,45 @@ export const Admin = () => {
   const [max, setMax] = useState();
   const [node, setNode] = useState();
   const [nodeVal, setNodeVal] = useState();
+  const [flag, setFlag] = useState();
   useLayoutEffect(() => {
     if (JSON.parse(localStorage.getItem("user")).isAdmin === false) {
       history.push("/");
     }
+    fetch("/flag", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFlag(data.message);
+      });
   }, []);
 
-  const startVote = () => {};
+  const startVote = () => {
+    fetch("/set-flag", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        flag: true,
+        chartFlag: false,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFlag(data.message);
+      });
+    window.setTimeout(() => {
+      history.push("/");
+    }, 1700);
+  };
+
   const endVote = () => {
     fetch("http://localhost:4001/broadcast/Forcemine")
       .then((response) => response.json())
@@ -25,6 +57,37 @@ export const Admin = () => {
           position: "top-center",
         });
       });
+    fetch("/set-flag", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        flag: false,
+        chartFlag: true,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFlag(data.message);
+      });
+    fetch("/send-mail-all", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        toast.success(data.message, {
+          position: "top-center",
+        });
+      });
+    window.setTimeout(() => {
+      history.push("/dashboard");
+    }, 1700);
   };
 
   const runConsensus = () => {
@@ -192,7 +255,7 @@ export const Admin = () => {
             class="btn btn-outline-success btn-md"
             id="btn1"
             onClick={() => startVote()}
-            // disabled={BTN}
+            disabled={flag}
           >
             Start Voting
           </button>
@@ -204,6 +267,7 @@ export const Admin = () => {
             }}
             class="btn btn-outline-secondary btn-md"
             id="btn1"
+            disabled={!flag}
             onClick={() => endVote()}
           >
             End Voting

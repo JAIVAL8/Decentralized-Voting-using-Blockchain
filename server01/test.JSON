@@ -1,70 +1,70 @@
 [
   {
     "uid": "16",
-    "receiver": "xpy",
+    "receiver": "CONGRESS",
     "location": "Bhiwandi",
     "age": 21,
     "gender": "Male"
   },
   {
     "uid": "161",
-    "receiver": "xpy",
+    "receiver": "AAP",
     "location": "Thane",
     "age": 24,
     "gender": "Female"
   },
   {
     "uid": "162",
-    "receiver": "xpy",
+    "receiver": "NOTA",
     "location": "Vasai",
     "age": 36,
     "gender": "Others"
   },
   {
     "uid": "163",
-    "receiver": "xpy",
+    "receiver": "A.I.M.I.M",
     "location": "Borivali",
     "age": 29,
     "gender": "Female"
   },
   {
     "uid": "164",
-    "receiver": "xpy",
+    "receiver": "AAP",
     "location": "Bhiwandi",
     "age": 18,
     "gender": "Male"
   },
   {
     "uid": "165",
-    "receiver": "xpy",
+    "receiver": "AAP",
     "location": "Bhiwandi",
     "age": 24,
     "gender": "Female"
   },
   {
     "uid": "166",
-    "receiver": "xpy",
+    "receiver": "BJP",
     "location": "Thane",
     "age": 28,
     "gender": "Male"
   },
   {
     "uid": "167",
-    "receiver": "xpy",
+    "receiver": "A.I.M.I.M",
     "location": "Vasai",
     "age": 46,
     "gender": "Others"
   },
   {
     "uid": "168",
-    "receiver": "xpy",
+    "receiver": "BJP",
     "location": "Borivali",
     "age": 61,
     "gender": "Male"
   },
   {
     "uid": "169",
-    "receiver": "xpy",
+    "receiver": "CONGRESS",
     "location": "Bhiwandi",
     "age": 72,
     "gender": "Female"

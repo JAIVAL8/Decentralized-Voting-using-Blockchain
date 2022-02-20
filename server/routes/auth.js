@@ -5,6 +5,7 @@ const CryptoJS = require("crypto-js");
 const crypto = require("crypto");
 // const SHA256 = require("crypto-js/sha256");
 const User = mongoose.model("User");
+const Admin = mongoose.model("Admin");
 const jwt = require("jsonwebtoken");
 const {
   SECRET_KEY,
@@ -71,7 +72,7 @@ router.post("/signup", (req, res) => {
       const encryptedAge = encrypt(age.toString(), SECRET_KEY);
       const encryptedCity = encrypt(city, SECRET_KEY);
       const encryptedEmail = encrypt(email, SECRET_KEY);
-      //const encryptedAadhar = encrypt(hashedAadhar, SECRET_KEY);
+      const encryptedAadhar = encrypt(hashedAadhar, SECRET_KEY);
 
       const user = new User({
         uId: uid,
@@ -80,7 +81,7 @@ router.post("/signup", (req, res) => {
         gender: encryptedGender,
         age: encryptedAge,
         city: encryptedCity,
-        aadhar: hashedAadhar,
+        aadhar: encryptedAadhar,
       });
 
       user
@@ -222,8 +223,7 @@ router.post("/new-password", (req, res) => {
       if (!user) {
         return res.status(422).json({ err: "Try again session expired" });
       }
-
-      const hashedAadhar = user.aadhar;
+      const hashedAadhar = decrypt(user.aadhar, SECRET_KEY);
       //console.log(decryptedAadhar);
       const txt = hashedAadhar + newPassword;
       // console.log(uid);
@@ -287,7 +287,7 @@ router.post("/verify-password", requireLogin, (req, res) => {
   const phoneNo = req.body.phoneNo;
 
   const decryptedPhoneNo = decrypt(phoneNo, password);
-
+  //console.log(decryptedPhoneNo);
   if (!decryptedPhoneNo) {
     return res.status(422).json({ error: "Incorrect Password" });
   } else {
@@ -336,6 +336,87 @@ router.post("/send-mail", requireLogin, (req, res) => {
       }
     }
   );
+});
+
+router.post("/set-flag", requireLogin, (req, res) => {
+  const { flag, chartFlag } = req.body;
+  Admin.findOne({ btnFlag: !flag }).then((admin) => {
+    admin.btnFlag = flag;
+    admin.chartFlag = chartFlag;
+    admin
+      .save()
+      .then((savedAdmin) => {
+        res.json({ message: savedAdmin.btnFlag });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+});
+
+router.get("/flag", requireLogin, (req, res) => {
+  Admin.findOne().then((admin) => {
+    res.json({ message: admin.btnFlag });
+  });
+});
+
+router.get("/chart-flag", requireLogin, (req, res) => {
+  Admin.findOne().then((admin) => {
+    // console.log(admin);
+    res.json({ message: admin.chartFlag });
+  });
+});
+
+router.get("/send-mail-all", requireLogin, (req, res) => {
+  User.find({})
+    .then((user) => {
+      for (let i = 0; i < user.length; i++) {
+        const decryptedEmail = decrypt(user[i].email, SECRET_KEY);
+        // console.log(decryptedEmail);
+        let transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          port: 587,
+          secure: false, // true for 465, false for other ports
+          auth: {
+            user: EMAIL,
+            pass: EMAIL_PASS,
+          },
+        });
+        var today = new Date();
+        var date =
+          today.getDate() +
+          "/" +
+          (today.getMonth() + 1) +
+          "/" +
+          today.getFullYear();
+        var time =
+          today.getHours() +
+          ":" +
+          today.getMinutes() +
+          ":" +
+          today.getSeconds();
+        var dateTime = date + " " + time;
+        transporter.sendMail(
+          {
+            from: EMAIL,
+            to: decryptedEmail, // list of receivers
+            subject: "VOTECHAIN [Result are Out]", // Subject line
+            html: `<br><h3> The Voting is ended. <br> The result are Out Kindly go to Dashboard page to checkout the result.</h3>  <br> <p>${
+              HOST + "/dashboard"
+            }<p> <br> ${dateTime}`,
+          },
+          (error, response) => {
+            if (error) {
+              console.log(error);
+            } else {
+              //console.log(response);
+            }
+          }
+        );
+      }
+      res.json({ message: "Sent Mail Successfully" });
+    })
+    .catch((err) => console.error(`Failed to find documents: ${err}`));
 });
 
 module.exports = router;

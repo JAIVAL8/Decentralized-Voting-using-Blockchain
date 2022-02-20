@@ -12,6 +12,7 @@ mongoose.connect(MONGOURI, {
 });
 
 require("./models/user");
+require("./models/admin");
 
 app.use(express.json());
 app.use(require("./routes/auth"));

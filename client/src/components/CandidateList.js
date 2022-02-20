@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useLayoutEffect } from "react";
 import "./CandidateList.css";
 import AAP from "../images/aap.png";
 import Congress from "../images/Congress.jpg";
@@ -21,46 +21,58 @@ function CandidateList() {
   const { state, dispatch } = useContext(UserContext);
   const history = useHistory();
   const [disable, setDisable] = useState(false);
+  const [flag, setFlag] = useState();
+
+  useLayoutEffect(() => {
+    fetch("/flag", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFlag(!data.message);
+      });
+  }, []);
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     const uId = user.uId;
 
-    // fetch("http://localhost:4001/checkuid", {
-    //   method: "post",
+    fetch("http://localhost:4001/checkuid", {
+      method: "post",
 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        uid: uId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error, {
+            position: "top-center",
+          });
+          setDisable(true);
+        }
+      });
+
+    // fetch("/flag", {
+    //   method: "get",
     //   headers: {
     //     "Content-Type": "application/json",
+    //     Authorization: "Bearer " + localStorage.getItem("jwt"),
     //   },
-    //   body: JSON.stringify({
-    //     uid: uId,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     if (data.error) {
-    //       toast.error(data.error, {
-    //         position: "top-center",
-    //       });
-    //       setDisable(true);
-    //     }
-    //   });
-
-    // fetch("/btn-flag", {
-    //   method: "post",
-
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     uid: uId,
-    //   }),
     // })
     //   .then((response) => response.json())
     //   .then((data) => {
-    //     toast.success(data.btnFlag, {
-    //       position: "top-center",
-    //     });
+    //     setFlag(data.message);
     //   });
+    // console.log("----->>>>", flag);
   }, []);
 
   const postData = (candidateName) => {
@@ -118,9 +130,9 @@ function CandidateList() {
               }
             );
             // console.log(recaptcha, "<<------");
-            const number = "+91" + data.phone;
+            // const number = "+91" + data.phone;
             //console.log(number);
-            //const number = "+911234567890";
+            const number = "+911234567890";
             var n1 = number.substr(0, 5);
             var n2 = number.substr(10);
             var n = n1 + "*****" + n2;
@@ -280,7 +292,7 @@ function CandidateList() {
                   </p>
                   <button
                     className="btn btn-primary"
-                    disabled={disable}
+                    disabled={disable || flag}
                     onClick={() => postData("CONGRESS")}
                   >
                     Click to Vote
@@ -307,7 +319,7 @@ function CandidateList() {
                   </p>
                   <button
                     className="btn btn-primary"
-                    disabled={disable}
+                    disabled={disable || flag}
                     onClick={() => postData("AAP")}
                   >
                     Click to Vote
@@ -337,7 +349,7 @@ function CandidateList() {
                   </p>
                   <button
                     className="btn btn-primary"
-                    disabled={disable}
+                    disabled={disable || flag}
                     onClick={() => postData("BJP")}
                   >
                     Click to Vote
@@ -367,7 +379,8 @@ function CandidateList() {
                   </p>
                   <button
                     className="btn btn-primary"
-                    disabled={disable}
+                    disabled={disable || flag}
+                    style={{ marginTop: "2.5rem" }}
                     onClick={() => postData("A.I.M.I.M")}
                   >
                     Click to Vote
@@ -394,7 +407,8 @@ function CandidateList() {
                   </p>
                   <button
                     className="btn btn-primary"
-                    disabled={disable}
+                    disabled={disable || flag}
+                    style={{ marginTop: "2.5rem" }}
                     onClick={() => postData("NOTA")}
                   >
                     Click to Vote

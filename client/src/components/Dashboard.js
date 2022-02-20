@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import faker from "faker";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import { Bar, Pie, Doughnut } from "react-chartjs-2";
+import swal from "sweetalert";
 
 function Dashboard() {
   const [male, setMale] = useState(0);
@@ -10,18 +10,55 @@ function Dashboard() {
   const [vasai, setVasai] = useState(0);
   const [thane, setThane] = useState(0);
   const [borivali, setBorivali] = useState(0);
+  const [flag, setFlag] = useState();
   const [ag, setAGrp] = useState(0);
   const [bg, setBGrp] = useState(0);
   const [cg, setCGrp] = useState(0);
   const [dg, setDGrp] = useState(0);
   const [eg, setEGrp] = useState(0);
+  const [cong, setCong] = useState(0);
+  const [aap, setAap] = useState(0);
+  const [bjp, setBjp] = useState(0);
+  const [amim, setAmim] = useState(0);
+  const [nota, setNota] = useState(0);
+
+  useLayoutEffect(() => {
+    fetch("/chart-flag", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        setFlag(res.message);
+      });
+    if (flag) {
+      const party = Math.max(aap, bjp, amim, nota, cong);
+      var res = "";
+      if (party === aap) {
+        res = "AAP";
+      } else if (party === bjp) {
+        res = "BJP";
+      } else if (party === cong) {
+        res = "CONGRESS";
+      } else if (party === amim) {
+        res = "A.I.M.I.M";
+      } else {
+        res = "NOTA";
+      }
+
+      swal("🎉✨", `Congratulations to the ${res} party`, "success");
+    }
+  }, [flag]);
 
   useEffect(() => {
     const fetchDetails = () => {
       fetch("http://localhost:4001/result")
         .then((response) => response.json())
         .then((result) => {
-          console.log(result);
+          //console.log(result);
           var m = 0,
             f = 0,
             o = 0,
@@ -33,7 +70,12 @@ function Dashboard() {
             bgrp = 0,
             cgrp = 0,
             dgrp = 0,
-            egrp = 0;
+            egrp = 0,
+            a = 0,
+            b = 0,
+            c = 0,
+            d = 0,
+            e = 0;
           for (let i = 0; i < result.length; i++) {
             if (result[i].gender === "Female") {
               f++;
@@ -79,6 +121,18 @@ function Dashboard() {
             ) {
               egrp++;
             }
+
+            if (result[i].receiver === "CONGRESS") {
+              a++;
+            } else if (result[i].receiver === "AAP") {
+              b++;
+            } else if (result[i].receiver === "BJP") {
+              c++;
+            } else if (result[i].receiver === "A.I.M.I.M") {
+              d++;
+            } else if (result[i].receiver === "NOTA") {
+              e++;
+            }
           }
           setMale(m);
           setFemale(f);
@@ -92,6 +146,11 @@ function Dashboard() {
           setCGrp(cgrp);
           setDGrp(dgrp);
           setEGrp(egrp);
+          setCong(a);
+          setAap(b);
+          setBjp(c);
+          setAmim(d);
+          setNota(e);
         });
     };
     fetchDetails();
@@ -106,6 +165,19 @@ function Dashboard() {
       title: {
         display: true,
         text: "City Chart",
+      },
+    },
+  };
+
+  const option4 = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Vote Chart",
       },
     },
   };
@@ -142,6 +214,17 @@ function Dashboard() {
       {
         label: "City",
         data: [bhiwandi, vasai, borivali, thane],
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+    ],
+  };
+
+  const data4 = {
+    labels: ["CONGRESS", "AAP", "BJP", "A.I.M.I.M", "NOTA"],
+    datasets: [
+      {
+        label: "Votes",
+        data: [cong, aap, bjp, amim, nota],
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
     ],
@@ -197,6 +280,15 @@ function Dashboard() {
   return (
     <div>
       <div className="container">
+        {flag ? (
+          <>
+            <div style={{ padding: "15px" }}>
+              <Bar options={option4} data={data4} />
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
         <div
           className="pie-chart"
           style={{

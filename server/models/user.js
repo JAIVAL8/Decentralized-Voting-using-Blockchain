@@ -19,7 +19,10 @@ const userSchema = new mongoose.Schema({
   },
   resetToken: String,
   expireToken: Date,
-  aadhar: String,
+  aadhar: {
+    type: String,
+    required: true,
+  },
   age: {
     type: String,
     required: true,
