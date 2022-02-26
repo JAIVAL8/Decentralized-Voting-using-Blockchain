@@ -29,6 +29,17 @@ export const Admin = () => {
   }, []);
 
   const startVote = () => {
+    // fetch("http://localhost:4001/broadcast/reset", {
+    //   method: "get",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: "Bearer " + localStorage.getItem("jwt"),
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     setFlag(data.message);
+    //   });
     fetch("/set-flag", {
       method: "post",
       headers: {
@@ -50,7 +61,13 @@ export const Admin = () => {
   };
 
   const endVote = () => {
-    fetch("http://localhost:4001/broadcast/Forcemine")
+    fetch("http://localhost:4001/broadcast/Forcemine", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         toast.success(data.message, {
@@ -92,7 +109,13 @@ export const Admin = () => {
 
   const runConsensus = () => {
     if (!nodeVal) return;
-    fetch(`http://localhost:${nodeVal}/consensus`)
+    fetch(`http://localhost:${nodeVal}/consensus`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         toast.success(data.message, {
@@ -112,6 +135,7 @@ export const Admin = () => {
         method: "post",
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
         },
         body: JSON.stringify({
           networkNodes,
@@ -140,6 +164,7 @@ export const Admin = () => {
       method: "post",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
       body: JSON.stringify({
         diff: difficulty,

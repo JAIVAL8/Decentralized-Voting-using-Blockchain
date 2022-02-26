@@ -7,6 +7,7 @@ app.use(bodyParser.json());
 const Blockchain = require("./Mainchain");
 const votechain = new Blockchain();
 
+// const requireLogin = require("../middleware/requireLogin");
 const port = process.argv[2];
 
 const reqPromise = require("request-promise");
@@ -18,10 +19,27 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../server/config/keys");
+
+const requireLogin = (req, res, next) => {
+  const { authorization } = req.headers;
+  //authorization === Bearer wifjgvnewi948uvdnasc9290
+  if (!authorization) {
+    return res.status(401).json({ err: "Admin must be logged in" });
+  }
+  const token = authorization.replace("Bearer ", ""); //replacing bearer with empty to access only token
+  jwt.verify(token, JWT_SECRET, (error, payload) => {
+    if (error) {
+      return res.status(401).json({ err: "you must be logged in" });
+    }
+    next();
+  });
+};
 
 app.get("/mine", function (req, res) {
   let newBlock = votechain.createBlock(false);
-//   console.log(JSON.stringify(newBlock));
+  //   console.log(JSON.stringify(newBlock));
   newBlock = votechain.mineBlock(newBlock);
   res.send(newBlock);
 });
@@ -30,11 +48,11 @@ app.get("/blockchain", function (req, res) {
   res.send(votechain);
 });
 
-app.get("/result", function (req, res) {
+app.get("/result", requireLogin, function (req, res) {
   res.send(votechain.Results());
 });
 
-app.post("/checkuid", function (req, res) {
+app.post("/checkuid", requireLogin, function (req, res) {
   if (votechain.DoesVoteExist(req.body.uid)) {
     //Alert('Vote Already Exist') ;
     return res.status(422).json({ error: "Already Voted for this Election" });
@@ -47,7 +65,7 @@ app.get("/Forcemine", function (req, res) {
     message: `All Pending Transaction will be added to block Right away.`,
   });
 });
-app.get("/broadcast/Forcemine", function (req, res) {
+app.get("/broadcast/Forcemine", requireLogin, function (req, res) {
   votechain.ForceTransactionBlock();
   const requests = [];
   votechain.networkNodes.forEach((networkNode) => {
@@ -79,7 +97,7 @@ app.post("/Set-Parameters", function (req, res) {
   console.log("Max Transactions per Block:" + votechain.maxvotes);
 });
 
-app.post("/broadcast/Set-Parameters", function (req, res) {
+app.post("/broadcast/Set-Parameters", requireLogin, function (req, res) {
   const diff = parseInt(req.body.diff);
   const max = parseInt(req.body.max);
   console.log(diff);
@@ -126,7 +144,7 @@ app.post("/Pending-votes", function (req, res) {
   });
 });
 
-app.post("/broadcast/Pending-votes", function (req, res) {
+app.post("/broadcast/Pending-votes", requireLogin, function (req, res) {
   const transaction = votechain.addTransactions(
     req.body.uid,
     req.body.receiver,
@@ -170,7 +188,7 @@ app.post("/broadcast/Pending-votes", function (req, res) {
       votechain.pendingTransactions.push(transaction);
       console.log(votechain.pendingTransactions);
       const extra = votechain.pendingTransactions[votechain.maxvotes];
-      
+
       const start = Date.now();
       const requests = [];
       Nodes = [];
@@ -183,13 +201,12 @@ app.post("/broadcast/Pending-votes", function (req, res) {
           method: "GET",
           json: true,
         };
-       requests.push(reqPromise(requestOptions));
+        requests.push(reqPromise(requestOptions));
       });
 
-      Promise.any(requests)
-      .then((newBlock) => {
+      Promise.any(requests).then((newBlock) => {
         res.json({
-          message: `Mining Success!`
+          message: `Mining Success!`,
         });
         votechain.addBlock(newBlock);
         console.log(newBlock);
@@ -216,7 +233,6 @@ app.post("/broadcast/Pending-votes", function (req, res) {
         });
       });
 
-      
       const stop = Date.now();
       console.log(`Time Taken to execute = ${(stop - start) / 1000} seconds`);
     }
@@ -243,7 +259,7 @@ app.post("/register-node", function (req, res) {
   }
 });
 
-app.post("/register-bulk-nodes", function (req, res) {
+app.post("/register-bulk-nodes", requireLogin, function (req, res) {
   const networkNodes = req.body.networkNodes;
 
   networkNodes.forEach((nodeUrl) => {
@@ -260,7 +276,7 @@ app.post("/register-bulk-nodes", function (req, res) {
   });
 });
 
-app.get("/consensus", function (req, res) {
+app.get("/consensus", requireLogin, function (req, res) {
   const requests = [];
   votechain.networkNodes.forEach((nodeUrl) => {
     const requestOptions = {

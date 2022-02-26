@@ -46,6 +46,7 @@ function CandidateList() {
 
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
       body: JSON.stringify({
         uid: uId,
@@ -190,6 +191,8 @@ function CandidateList() {
 
                         headers: {
                           "Content-Type": "application/json",
+                          Authorization:
+                            "Bearer " + localStorage.getItem("jwt"),
                         },
                         body: JSON.stringify({
                           uid: uId,

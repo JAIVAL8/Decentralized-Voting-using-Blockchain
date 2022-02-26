@@ -37,28 +37,44 @@ function Dashboard() {
     if (flag) {
       const party = Math.max(aap, bjp, amim, nota, cong);
       var res = "";
-      if (party === aap) {
-        res = "AAP";
-      } else if (party === bjp) {
-        res = "BJP";
-      } else if (party === cong) {
-        res = "CONGRESS";
-      } else if (party === amim) {
-        res = "A.I.M.I.M";
-      } else {
-        res = "NOTA";
+      var arrParty = [aap, bjp, amim, nota, cong];
+      var cnt = 0;
+      for (var k = 0; k < 5; k++) {
+        if (party != 0 && party == arrParty[k]) {
+          cnt++;
+        }
       }
+      if (cnt > 1) {
+        swal("🎉✨", `There is a Tie between ${cnt} parties`, "success");
+      } else if (party != 0) {
+        if (party === aap) {
+          res = "AAP";
+        } else if (party === bjp) {
+          res = "BJP";
+        } else if (party === cong) {
+          res = "CONGRESS";
+        } else if (party === amim) {
+          res = "A.I.M.I.M";
+        } else {
+          res = "NOTA";
+        }
 
-      swal("🎉✨", `Congratulations to the ${res} party`, "success");
+        swal("🎉✨", `Congratulations to the ${res} party`, "success");
+      }
     }
   }, [flag]);
 
   useEffect(() => {
     const fetchDetails = () => {
-      fetch("http://localhost:4001/result")
+      fetch("http://localhost:4001/result", {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
+      })
         .then((response) => response.json())
         .then((result) => {
-          //console.log(result);
           var m = 0,
             f = 0,
             o = 0,
