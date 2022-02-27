@@ -199,6 +199,14 @@ class Blockchain {
     //console.log(Votedlist);
     return Votedlist;
   }
+
+
+  //Resetting Blockchain
+  reset(){
+    this.chain=[];
+    this.chain = [this.createGensis()];
+    this.pendingTransactions = [];
+  }
 }
 
 module.exports = Blockchain;

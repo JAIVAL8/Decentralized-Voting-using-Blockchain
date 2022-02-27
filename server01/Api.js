@@ -19,6 +19,7 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });
+
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../server/config/keys");
 
@@ -36,8 +37,37 @@ const requireLogin = (req, res, next) => {
     next();
   });
 };
+app.get("/reset",requireLogin, function (req, res) {
+  votechain.reset();
+});
+app.get("/broadcast/reset",requireLogin, function (req, res) {
+  const { authorization } = req.headers;
+  const token = authorization.replace("Bearer ", "");
+  votechain.reset();
+  const requests = [];
+  votechain.networkNodes.forEach((networkNode) => {
+    const requestOptions = {
+      uri: networkNode + "/reset",
+      method: "GET",
+      json: true,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      }
 
-app.get("/mine", function (req, res) {
+    };
+
+    requests.push(reqPromise(requestOptions));
+  });
+
+  Promise.all(requests).then((data) => {
+    res.json({
+      message: `Resting-chain!`,
+    });
+  });
+});
+
+app.get("/mine", requireLogin,function (req, res) {
   let newBlock = votechain.createBlock(false);
   //   console.log(JSON.stringify(newBlock));
   newBlock = votechain.mineBlock(newBlock);
@@ -59,13 +89,15 @@ app.post("/checkuid", requireLogin, function (req, res) {
   }
 });
 
-app.get("/Forcemine", function (req, res) {
+app.get("/Forcemine",requireLogin, function (req, res) {
   votechain.ForceTransactionBlock();
   res.json({
     message: `All Pending Transaction will be added to block Right away.`,
   });
 });
 app.get("/broadcast/Forcemine", requireLogin, function (req, res) {
+  const { authorization } = req.headers;
+  const token = authorization.replace("Bearer ", "");
   votechain.ForceTransactionBlock();
   const requests = [];
   votechain.networkNodes.forEach((networkNode) => {
@@ -73,6 +105,10 @@ app.get("/broadcast/Forcemine", requireLogin, function (req, res) {
       uri: networkNode + "/Forcemine",
       method: "GET",
       json: true,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      }
     };
 
     requests.push(reqPromise(requestOptions));
@@ -85,7 +121,7 @@ app.get("/broadcast/Forcemine", requireLogin, function (req, res) {
   });
 });
 
-app.post("/Set-Parameters", function (req, res) {
+app.post("/Set-Parameters",requireLogin, function (req, res) {
   const diff = parseInt(req.body.diff);
   const max = parseInt(req.body.max);
   votechain.difficulty = diff;
@@ -103,6 +139,8 @@ app.post("/broadcast/Set-Parameters", requireLogin, function (req, res) {
   console.log(diff);
   console.log(max);
 
+  const { authorization } = req.headers;
+  const token = authorization.replace("Bearer ", "");
   votechain.difficulty = diff;
   votechain.maxvotes = max;
   console.log("chain diff:" + votechain.difficulty);
@@ -114,6 +152,10 @@ app.post("/broadcast/Set-Parameters", requireLogin, function (req, res) {
       method: "POST",
       body: { diff: diff, max: max },
       json: true,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      }
     };
 
     requests.push(reqPromise(requestOptions));
@@ -125,7 +167,7 @@ app.post("/broadcast/Set-Parameters", requireLogin, function (req, res) {
     });
   });
 });
-app.post("/Postblock", function (req, res) {
+app.post("/Postblock",requireLogin, function (req, res) {
   const newBlock = req.body.newBlock;
 
   const extra = req.body.extra;
@@ -134,7 +176,7 @@ app.post("/Postblock", function (req, res) {
   votechain.pendingTransactions.push(extra);
 });
 
-app.post("/Pending-votes", function (req, res) {
+app.post("/Pending-votes",requireLogin, function (req, res) {
   const Transactions = req.body;
 
   votechain.pendingTransactions.push(Transactions);
@@ -145,6 +187,8 @@ app.post("/Pending-votes", function (req, res) {
 });
 
 app.post("/broadcast/Pending-votes", requireLogin, function (req, res) {
+  const { authorization } = req.headers;
+  const token = authorization.replace("Bearer ", "");
   const transaction = votechain.addTransactions(
     req.body.uid,
     req.body.receiver,
@@ -173,6 +217,10 @@ app.post("/broadcast/Pending-votes", requireLogin, function (req, res) {
           method: "POST",
           body: transaction,
           json: true,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          }
         };
 
         requests.push(reqPromise(requestOptions));
@@ -200,6 +248,10 @@ app.post("/broadcast/Pending-votes", requireLogin, function (req, res) {
           uri: Node + "/mine",
           method: "GET",
           json: true,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          }
         };
         requests.push(reqPromise(requestOptions));
       });
@@ -221,6 +273,10 @@ app.post("/broadcast/Pending-votes", requireLogin, function (req, res) {
             method: "POST",
             body: { newBlock: newBlock, extra: extra },
             json: true,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            }
           };
 
           requests.push(reqPromise(requestOptions));
@@ -239,7 +295,7 @@ app.post("/broadcast/Pending-votes", requireLogin, function (req, res) {
   }
 });
 
-app.post("/register-node", function (req, res) {
+app.post("/register-node",requireLogin, function (req, res) {
   console.log(req.body.nodeUrl);
   const nodeUrl = req.body.nodeUrl;
 

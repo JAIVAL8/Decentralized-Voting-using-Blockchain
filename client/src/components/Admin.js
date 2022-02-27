@@ -29,17 +29,21 @@ export const Admin = () => {
   }, []);
 
   const startVote = () => {
-    // fetch("http://localhost:4001/broadcast/reset", {
-    //   method: "get",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: "Bearer " + localStorage.getItem("jwt"),
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setFlag(data.message);
-    //   });
+    if (!node) return;
+    if (!difficulty || !max) {
+      return;
+    }
+    fetch("http://localhost:4001/broadcast/reset", {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFlag(data.message);
+      });
     fetch("/set-flag", {
       method: "post",
       headers: {
